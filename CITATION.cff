@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: >-
+  The Ternary Operating Point: Threshold Control and Annealing in
+  1.58-Bit Language Models
+message: If you use this artefact, please cite the paper.
+type: software
+authors:
+  - family-names: Kilic
+    given-names: Haydar
+    email: haydar.kilic@ostimteknik.edu.tr
+    orcid: https://orcid.org/0000-0002-2551-3772
+    affiliation: >-
+      Department of Artificial Intelligence Engineering,
+      Ostim Technical University, Ankara, Türkiye
+repository-code: https://github.com/HAYDARKILIC/tai
+license: MIT
+keywords:
+  - ternary quantization
+  - quantization-aware training
+  - 1.58-bit language models
+  - weight initialization
+  - sparsity control
+  - threshold annealing
+  - pre-registered experimental design
+abstract: >-
+  Research artefact for a pre-registered study of the ternary operating point
+  in 1.58-bit language models: 3,016 persisted runs over an eleven-point scale
+  ladder and two architecture families, with the provenance manifest and the
+  analysis and figure pipeline. Every table and figure in the paper regenerates
+  from the run store without a GPU.

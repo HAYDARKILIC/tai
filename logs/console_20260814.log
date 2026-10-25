@@ -1,0 +1,732 @@
+[tee] console mirrored to /content/drive/MyDrive/TAI_neuro/logs/console_20260814.log
+RUN_CFG: {
+  "session_budget_hours": null,
+  "token_budget": 20000000,
+  "batch_size": 32,
+  "seq_len": 512,
+  "warmup_steps": 120,
+  "peak_lr": 0.002,
+  "min_lr": 0.0001,
+  "weight_decay": 0.1,
+  "grad_clip": 1.0,
+  "plateau_tol": 0.01,
+  "plateau_frac": 0.4,
+  "plateau_min_tail": 5,
+  "eval_every_frac": 0.08,
+  "eval_batches_trace": 12,
+  "budget_check": true,
+  "budget_check_mult": 2.0,
+  "budget_check_seeds": [
+    1337,
+    2026,
+    7
+  ],
+  "seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718,
+    9001,
+    13,
+    271,
+    99,
+    555,
+    8,
+    31415,
+    777,
+    2024,
+    11
+  ],
+  "rho0_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "calib_seeds": [
+    100001,
+    100002,
+    100003
+  ],
+  "per_method_lr": true,
+  "wallclock_equal_h1": false,
+  "causal_intervention": true,
+  "plateau_tol_grid": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "plateau_frac_grid": [
+    0.1,
+    0.15,
+    0.25
+  ],
+  "lmeval_n": 300,
+  "lmeval_batch": 16,
+  "lmeval_max_seeds": 3,
+  "lr_cal_steps": 300,
+  "divergence_factor": 1.25,
+  "preflight_bench_compile": true,
+  "ARM_FULL_RUN": true,
+  "preflight_only": false,
+  "bonferroni_alpha": 0.0125,
+  "tost_margin": 0.02,
+  "tost_margin_frac": 0.1,
+  "primary_baseline": "bitnet158",
+  "secondary_baselines": [
+    "standard",
+    "lsuv",
+    "sparse_sched",
+    "gamma_offset"
+  ],
+  "sweep_arms_note": "rho0 sweep runs tai + gamma_offset (see Cell 12)",
+  "confirmatory_scale": "dim384",
+  "primary_family": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "warmup_start_grid": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "warmup_tau_grid": [
+    120,
+    240,
+    480
+  ],
+  "lr_grid": [
+    0.001,
+    0.002,
+    0.003
+  ],
+  "ablation_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "confirmatory_scales": [
+    "dim256",
+    "dim384",
+    "dim512",
+    "dim768"
+  ],
+  "exploratory_scales": [
+    "dim192",
+    "dim320",
+    "dim640",
+    "dim896",
+    "dim1024",
+    "dim1280",
+    "dim1536"
+  ],
+  "scaling_optin_scales": [
+    "dim2048"
+  ],
+  "scaling_budget_mode": "token_equal",
+  "exploratory_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "val_folds": 5,
+  "val_chunk_tokens": 50000,
+  "holdout_frac": 0.06,
+  "width_ctrl_layers": 6,
+  "width_ctrl_scales": [
+    "wc384",
+    "wc512",
+    "wc768",
+    "wc1024"
+  ],
+  "width_ctrl_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "h3_negative_control": true,
+  "rho0_sweep_seeds_full": true,
+  "fp16_init_ablation": true,
+  "equiv_margin": 0.05
+}
+Run-All safety helpers ready (_require / _exists).
+
+========================================================================
+RUN MODE: FULL EXPERIMENT (multi-session grid; checkpoint + resume to Drive)
+========================================================================
+THIS Run All will: Runs the full token-equal grid + sweeps + ablations; finished runs are skipped; exits at the session time budget.
+NEXT STEP: Re-run each session until the manifest reports complete. Idempotent: finished runs are never recomputed.
+session_budget_hours=None | ARM_FULL_RUN=True | preflight_only=False
+========================================================================
+Email: ENABLED
+>>> RUN STARTED
+Quant self-test OK (absmean + bitnet-b1.58): [-1.0, 0.0, 1.0]
+BitLinear ready (FP16 + BitNet-b1.58 switch + gamma-warmup hook).
+dim192: dim 192 layers 4 (~1.4M non-embed)
+dim256: dim 256 layers 4 (~2.5M non-embed)
+dim320: dim 320 layers 5 (~4.8M non-embed)
+dim384: dim 384 layers 6 (~8.3M non-embed)
+dim512: dim 512 layers 8 (~19.6M non-embed)
+dim640: dim 640 layers 9 (~34.4M non-embed)
+dim768: dim 768 layers 10 (~55.1M non-embed)
+dim896: dim 896 layers 11 (~82.4M non-embed)
+dim1024: dim 1024 layers 12 (~117.4M non-embed)
+dim1280: dim 1280 layers 14 (~214.1M non-embed)
+dim1536: dim 1536 layers 16 (~352.3M non-embed)
+dim2048: dim 2048 layers 20 (~782.9M non-embed)
+Cfg schema + geometry guards PASSED for 28 configs.
+(R6) gamma_offset calibration OK: rho0=0.69 -> c=0.9998 (locked baseline recovers c=1)
+TAI rho0=0.5 -> init active 0.500
+TAI rho0=0.9 -> init active 0.900
+>>> DATA BUILD START
+>>> DATA BUILD DONE
+Split (R15): 58 interleaved held-out chunks of 50,000 tok (stride 16), guard=512 tok/side
+  TRAIN=45,041,120 tok | held-out total=2,900,000 tok (6.0%) | 5 sub-folds | primary VAL=600,000 tok
+  every sub-fold is disjoint from the SINGLE shared TRAIN -> R5's per-fold scores are genuinely held out
+Corpus: FineWeb-EDU (GPT-2 BPE) | 48000000 tokens | vocab 50257
+SIZES vocab rebound to 50257 -> {'dim192': 50257, 'dim256': 50257, 'dim320': 50257, 'dim384': 50257, 'dim512': 50257, 'dim640': 50257, 'dim768': 50257, 'dim896': 50257, 'dim1024': 50257, 'dim1280': 50257, 'dim1536': 50257, 'dim2048': 50257}
+Run-store ready. Existing runs: 0
+>>> LMEVAL TASKS CACHED
+lm-eval downstream: ENABLED (arc_easy+hellaswag, loglik mode)
+[grid] confirmatory=['dim256', 'dim384', 'dim512', 'dim768'] (x15 seeds) | exploratory=['dim192', 'dim320', 'dim640', 'dim896', 'dim1024', 'dim1280', 'dim1536'] (x5 seeds)
+  steady-state dim192      64.9 ms/step | peak   8.0 GB | loss 10.15
+  steady-state dim512      93.3 ms/step | peak  10.1 GB | loss 8.94
+  steady-state dim1024    172.2 ms/step | peak  15.8 GB | loss 7.93
+  cost model: sec/step = 0.0598 + 1.076e-10 * FLOPs/token   (fixed overhead is 92% of the smallest scale)
+
+--- kernel profile (smallest scale, 8 steps) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                     aten::_log_softmax         0.10%       7.550ms         0.17%      13.238ms      19.242us        1.635s        29.69%        1.635s       2.377ms           688  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.635s        29.69%        1.635s       2.377ms           688  
+                                               aten::mm         6.49%     491.681ms         7.35%     556.431ms     111.465us        1.224s        22.22%        1.230s     246.348us          4992  
+void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.046s        19.00%        1.046s       5.946ms           176  
+                                            aten::copy_         1.54%     116.403ms         4.05%     306.710ms      23.481us     957.830ms        17.39%     969.287ms      74.207us         13062  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     780.297ms        14.17%     780.297ms     158.275us          4930  
+                                              aten::mul         3.58%     270.895ms         5.92%     447.982ms      18.578us     299.294ms         5.43%     299.363ms      12.414us         24114  
+                                              aten::add         1.69%     127.867ms         2.79%     210.942ms      17.584us     172.238ms         3.13%     172.262ms      14.360us         11996  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     167.744ms         3.05%     167.744ms      23.827us          7040  
+                                              aten::sub         1.46%     110.641ms         2.42%     183.006ms      18.568us     151.733ms         2.76%     151.733ms      15.395us          9856  
+                                              aten::div         1.38%     104.379ms         2.21%     167.626ms      19.318us     138.529ms         2.52%     138.547ms      15.967us          8677  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     134.003ms         2.43%     134.003ms      10.555us         12696  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.572s
+Self CUDA time total: 5.507s
+
+
+compile A/B: 1.29x speedup | val_loss delta 0.01309
+  -> RECOMMEND FAST_CFG['compile']=True
+
+====================================================================
+PREFLIGHT REPORT
+====================================================================
+{
+  "tokenizer": "gpt2-bpe",
+  "vocab": 50257,
+  "corpus_source": "FineWeb-EDU (GPT-2 BPE)",
+  "used_synthetic": false,
+  "lmeval_available": true,
+  "plateau_token_budget": 20000000,
+  "steps_per_run": 1221,
+  "lmeval_tasks": {
+    "arc_easy": 300,
+    "hellaswag": 300
+  },
+  "init_loss_check": 10.155,
+  "sec_per_step_raw_smoke": 2.057,
+  "steady_state_sec_per_step": {
+    "dim192": 0.0649,
+    "dim512": 0.0933,
+    "dim1024": 0.1722
+  },
+  "cost_model": {
+    "fixed_overhead_sec": 0.0598,
+    "sec_per_flop_per_token": 1.075928498515333e-10,
+    "probed_scales": [
+      "dim192",
+      "dim512",
+      "dim1024"
+    ]
+  },
+  "profile_top": [
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                     aten::_log_softmax         0.10%       7.550ms         0.17%      13.238ms      19.242us        1.635s        29.69%        1.635s       2.377ms           688  ",
+    "void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.635s        29.69%        1.635s       2.377ms           688  ",
+    "                                               aten::mm         6.49%     491.681ms         7.35%     556.431ms     111.465us        1.224s        22.22%        1.230s     246.348us          4992  ",
+    "void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.046s        19.00%        1.046s       5.946ms           176  ",
+    "                                            aten::copy_         1.54%     116.403ms         4.05%     306.710ms      23.481us     957.830ms        17.39%     969.287ms      74.207us         13062  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     780.297ms        14.17%     780.297ms     158.275us          4930  ",
+    "                                              aten::mul         3.58%     270.895ms         5.92%     447.982ms      18.578us     299.294ms         5.43%     299.363ms      12.414us         24114  ",
+    "                                              aten::add         1.69%     127.867ms         2.79%     210.942ms      17.584us     172.238ms         3.13%     172.262ms      14.360us         11996  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     167.744ms         3.05%     167.744ms      23.827us          7040  ",
+    "                                              aten::sub         1.46%     110.641ms         2.42%     183.006ms      18.568us     151.733ms         2.76%     151.733ms      15.395us          9856  ",
+    "                                              aten::div         1.38%     104.379ms         2.21%     167.626ms      19.318us     138.529ms         2.52%     138.547ms      15.967us          8677  ",
+    "void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     134.003ms         2.43%     134.003ms      10.555us         12696  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  "
+  ],
+  "compile_ab": {
+    "eager": {
+      "sec_per_step": 0.0838,
+      "val_loss": 10.03513
+    },
+    "compiled": {
+      "sec_per_step": 0.0648,
+      "val_loss": 10.02204
+    }
+  },
+  "compile_speedup": 1.29,
+  "compile_loss_delta": 0.01309,
+  "smoke_run": {
+    "size": "dim192",
+    "sec_for_30_steps": 61.7,
+    "val_loss": 9.889,
+    "arc": NaN,
+    "hellaswag": NaN
+  },
+  "fast_mode": {
+    "fast": true,
+    "flash_sdpa": true,
+    "tf32": true,
+    "ce_chunks": 4,
+    "pin_batches": true,
+    "compile": true
+  },
+  "projection": {
+    "sec_per_step_smallest": 0.065,
+    "scale_weight_sum": 116.4,
+    "main_runs": 760,
+    "main_run_equivalents": 5985.4,
+    "aux_run_equivalents": 439,
+    "steps_per_run": 1221,
+    "projected_hours_all": 54.64,
+    "session_budget_hours": 24.0,
+    "fits_one_session": false,
+    "sessions_needed": 3
+  }
+}
+
+NOTE: ~54.64h > 24.0h/session -> ~3 sessions; resume is automatic, re-run this cell each session until complete.
+>>> PREFLIGHT DONE
+>>> PHASE START: main experiment
+>>> PHASE START: per-method LR calibration
+>>> LR* dim192/fp16_control
+>>> LR* dim192/standard
+>>> EXCEPTION (cell) — halted
+[tee] console mirrored to /content/drive/MyDrive/TAI_neuro/logs/console_20260814.log
+RUN_CFG: {
+  "session_budget_hours": null,
+  "token_budget": 20000000,
+  "batch_size": 32,
+  "seq_len": 512,
+  "warmup_steps": 120,
+  "peak_lr": 0.002,
+  "min_lr": 0.0001,
+  "weight_decay": 0.1,
+  "grad_clip": 1.0,
+  "plateau_tol": 0.01,
+  "plateau_frac": 0.4,
+  "plateau_min_tail": 5,
+  "eval_every_frac": 0.08,
+  "eval_batches_trace": 12,
+  "budget_check": true,
+  "budget_check_mult": 2.0,
+  "budget_check_seeds": [
+    1337,
+    2026,
+    7
+  ],
+  "seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718,
+    9001,
+    13,
+    271,
+    99,
+    555,
+    8,
+    31415,
+    777,
+    2024,
+    11
+  ],
+  "rho0_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "calib_seeds": [
+    100001,
+    100002,
+    100003
+  ],
+  "per_method_lr": true,
+  "wallclock_equal_h1": false,
+  "causal_intervention": true,
+  "plateau_tol_grid": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "plateau_frac_grid": [
+    0.1,
+    0.15,
+    0.25
+  ],
+  "lmeval_n": 300,
+  "lmeval_batch": 16,
+  "lmeval_max_seeds": 3,
+  "lr_cal_steps": 300,
+  "divergence_factor": 1.25,
+  "preflight_bench_compile": true,
+  "ARM_FULL_RUN": true,
+  "preflight_only": false,
+  "bonferroni_alpha": 0.0125,
+  "tost_margin": 0.02,
+  "tost_margin_frac": 0.1,
+  "primary_baseline": "bitnet158",
+  "secondary_baselines": [
+    "standard",
+    "lsuv",
+    "sparse_sched",
+    "gamma_offset"
+  ],
+  "sweep_arms_note": "rho0 sweep runs tai + gamma_offset (see Cell 12)",
+  "confirmatory_scale": "dim384",
+  "primary_family": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "warmup_start_grid": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "warmup_tau_grid": [
+    120,
+    240,
+    480
+  ],
+  "lr_grid": [
+    0.001,
+    0.002,
+    0.003
+  ],
+  "ablation_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "confirmatory_scales": [
+    "dim256",
+    "dim384",
+    "dim512",
+    "dim768"
+  ],
+  "exploratory_scales": [
+    "dim192",
+    "dim320",
+    "dim640",
+    "dim896",
+    "dim1024",
+    "dim1280",
+    "dim1536"
+  ],
+  "scaling_optin_scales": [
+    "dim2048"
+  ],
+  "scaling_budget_mode": "token_equal",
+  "exploratory_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "val_folds": 5,
+  "val_chunk_tokens": 50000,
+  "holdout_frac": 0.06,
+  "width_ctrl_layers": 6,
+  "width_ctrl_scales": [
+    "wc384",
+    "wc512",
+    "wc768",
+    "wc1024"
+  ],
+  "width_ctrl_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "h3_negative_control": true,
+  "rho0_sweep_seeds_full": true,
+  "fp16_init_ablation": true,
+  "equiv_margin": 0.05
+}
+Run-All safety helpers ready (_require / _exists).
+
+========================================================================
+RUN MODE: FULL EXPERIMENT (multi-session grid; checkpoint + resume to Drive)
+========================================================================
+THIS Run All will: Runs the full token-equal grid + sweeps + ablations; finished runs are skipped; exits at the session time budget.
+NEXT STEP: Re-run each session until the manifest reports complete. Idempotent: finished runs are never recomputed.
+session_budget_hours=None | ARM_FULL_RUN=True | preflight_only=False
+========================================================================
+Email: ENABLED
+>>> RUN STARTED
+Quant self-test OK (absmean + bitnet-b1.58): [-1.0, 0.0, 1.0]
+BitLinear ready (FP16 + BitNet-b1.58 switch + gamma-warmup hook).
+dim192: dim 192 layers 4 (~1.4M non-embed)
+dim256: dim 256 layers 4 (~2.5M non-embed)
+dim320: dim 320 layers 5 (~4.8M non-embed)
+dim384: dim 384 layers 6 (~8.3M non-embed)
+dim512: dim 512 layers 8 (~19.6M non-embed)
+dim640: dim 640 layers 9 (~34.4M non-embed)
+dim768: dim 768 layers 10 (~55.1M non-embed)
+dim896: dim 896 layers 11 (~82.4M non-embed)
+dim1024: dim 1024 layers 12 (~117.4M non-embed)
+dim1280: dim 1280 layers 14 (~214.1M non-embed)
+dim1536: dim 1536 layers 16 (~352.3M non-embed)
+dim2048: dim 2048 layers 20 (~782.9M non-embed)
+Cfg schema + geometry guards PASSED for 28 configs.
+(R6) gamma_offset calibration OK: rho0=0.69 -> c=0.9998 (locked baseline recovers c=1)
+TAI rho0=0.5 -> init active 0.500
+TAI rho0=0.9 -> init active 0.900
+>>> DATA CACHE HIT
+Split (R15): 58 interleaved held-out chunks of 50,000 tok (stride 16), guard=512 tok/side
+  TRAIN=45,041,120 tok | held-out total=2,900,000 tok (6.0%) | 5 sub-folds | primary VAL=600,000 tok
+  every sub-fold is disjoint from the SINGLE shared TRAIN -> R5's per-fold scores are genuinely held out
+Corpus: FineWeb-EDU (GPT-2 BPE) | 48000000 tokens | vocab 50257
+SIZES vocab rebound to 50257 -> {'dim192': 50257, 'dim256': 50257, 'dim320': 50257, 'dim384': 50257, 'dim512': 50257, 'dim640': 50257, 'dim768': 50257, 'dim896': 50257, 'dim1024': 50257, 'dim1280': 50257, 'dim1536': 50257, 'dim2048': 50257}
+Run-store ready. Existing runs: 20
+lm-eval downstream: ENABLED (arc_easy+hellaswag, loglik mode)
+[grid] confirmatory=['dim256', 'dim384', 'dim512', 'dim768'] (x15 seeds) | exploratory=['dim192', 'dim320', 'dim640', 'dim896', 'dim1024', 'dim1280', 'dim1536'] (x5 seeds)
+  steady-state dim192      64.8 ms/step | peak   8.0 GB | loss 10.15
+  steady-state dim512      93.3 ms/step | peak  10.1 GB | loss 8.94
+  steady-state dim1024    172.0 ms/step | peak  15.8 GB | loss 7.93
+  cost model: sec/step = 0.0598 + 1.074e-10 * FLOPs/token   (fixed overhead is 92% of the smallest scale)
+
+--- kernel profile (smallest scale, 8 steps) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                     aten::_log_softmax         0.10%       7.785ms         0.18%      14.094ms      20.485us        1.632s        29.68%        1.632s       2.373ms           688  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.632s        29.68%        1.632s       2.373ms           688  
+                                               aten::mm         6.41%     491.994ms         7.26%     556.765ms     111.531us        1.223s        22.23%        1.229s     246.135us          4992  
+void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.045s        19.01%        1.045s       5.940ms           176  
+                                            aten::copy_         1.57%     120.134ms         4.03%     308.811ms      23.642us     957.200ms        17.40%     968.668ms      74.159us         13062  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     779.967ms        14.18%     779.967ms     158.208us          4930  
+                                              aten::mul         3.57%     274.101ms         6.02%     461.629ms      19.144us     298.855ms         5.43%     298.924ms      12.396us         24114  
+                                              aten::add         1.79%     137.280ms         2.87%     220.050ms      18.344us     172.722ms         3.14%     172.746ms      14.400us         11996  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     167.404ms         3.04%     167.404ms      23.779us          7040  
+                                              aten::sub         1.47%     112.405ms         2.43%     186.293ms      18.902us     151.605ms         2.76%     151.607ms      15.382us          9856  
+                                              aten::div         1.39%     106.286ms         2.23%     170.871ms      19.692us     138.499ms         2.52%     138.517ms      15.964us          8677  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     134.857ms         2.45%     134.857ms      10.622us         12696  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.671s
+Self CUDA time total: 5.500s
+
+
+compile A/B: 1.30x speedup | val_loss delta 0.01320
+  -> RECOMMEND FAST_CFG['compile']=True
+
+====================================================================
+PREFLIGHT REPORT
+====================================================================
+{
+  "tokenizer": "gpt2-bpe",
+  "vocab": 50257,
+  "corpus_source": "FineWeb-EDU (GPT-2 BPE)",
+  "used_synthetic": false,
+  "lmeval_available": true,
+  "plateau_token_budget": 20000000,
+  "steps_per_run": 1221,
+  "lmeval_tasks": {
+    "arc_easy": 300,
+    "hellaswag": 300
+  },
+  "init_loss_check": 10.155,
+  "sec_per_step_raw_smoke": 2.1028,
+  "steady_state_sec_per_step": {
+    "dim192": 0.0648,
+    "dim512": 0.0933,
+    "dim1024": 0.172
+  },
+  "cost_model": {
+    "fixed_overhead_sec": 0.0598,
+    "sec_per_flop_per_token": 1.0742065572624311e-10,
+    "probed_scales": [
+      "dim192",
+      "dim512",
+      "dim1024"
+    ]
+  },
+  "profile_top": [
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                     aten::_log_softmax         0.10%       7.785ms         0.18%      14.094ms      20.485us        1.632s        29.68%        1.632s       2.373ms           688  ",
+    "void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.632s        29.68%        1.632s       2.373ms           688  ",
+    "                                               aten::mm         6.41%     491.994ms         7.26%     556.765ms     111.531us        1.223s        22.23%        1.229s     246.135us          4992  ",
+    "void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.045s        19.01%        1.045s       5.940ms           176  ",
+    "                                            aten::copy_         1.57%     120.134ms         4.03%     308.811ms      23.642us     957.200ms        17.40%     968.668ms      74.159us         13062  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     779.967ms        14.18%     779.967ms     158.208us          4930  ",
+    "                                              aten::mul         3.57%     274.101ms         6.02%     461.629ms      19.144us     298.855ms         5.43%     298.924ms      12.396us         24114  ",
+    "                                              aten::add         1.79%     137.280ms         2.87%     220.050ms      18.344us     172.722ms         3.14%     172.746ms      14.400us         11996  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     167.404ms         3.04%     167.404ms      23.779us          7040  ",
+    "                                              aten::sub         1.47%     112.405ms         2.43%     186.293ms      18.902us     151.605ms         2.76%     151.607ms      15.382us          9856  ",
+    "                                              aten::div         1.39%     106.286ms         2.23%     170.871ms      19.692us     138.499ms         2.52%     138.517ms      15.964us          8677  ",
+    "void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     134.857ms         2.45%     134.857ms      10.622us         12696  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  "
+  ],
+  "compile_ab": {
+    "eager": {
+      "sec_per_step": 0.084,
+      "val_loss": 10.0352
+    },
+    "compiled": {
+      "sec_per_step": 0.0648,
+      "val_loss": 10.022
+    }
+  },
+  "compile_speedup": 1.3,
+  "compile_loss_delta": 0.0132,
+  "smoke_run": {
+    "size": "dim192",
+    "sec_for_30_steps": 63.1,
+    "val_loss": 9.889,
+    "arc": NaN,
+    "hellaswag": NaN
+  },
+  "fast_mode": {
+    "fast": true,
+    "flash_sdpa": true,
+    "tf32": true,
+    "ce_chunks": 4,
+    "pin_batches": true,
+    "compile": true
+  },
+  "projection": {
+    "sec_per_step_smallest": 0.065,
+    "scale_weight_sum": 116.4,
+    "main_runs": 760,
+    "main_run_equivalents": 5985.4,
+    "aux_run_equivalents": 439,
+    "steps_per_run": 1221,
+    "projected_hours_all": 54.61,
+    "session_budget_hours": 24.0,
+    "fits_one_session": false,
+    "sessions_needed": 3
+  }
+}
+
+NOTE: ~54.61h > 24.0h/session -> ~3 sessions; resume is automatic, re-run this cell each session until complete.
+>>> PREFLIGHT DONE
+>>> PHASE START: main experiment
+>>> PHASE START: per-method LR calibration
+>>> LR* dim192/lsuv
+>>> LR* dim192/bitnet158
+>>> LR* dim192/sparse_sched
+>>> LR* dim192/gamma_offset
+>>> LR* dim192/tai
+>>> LR* dim192/tai_warmup
+>>> LR* dim256/fp16_control
+>>> LR* dim256/standard
+>>> LR* dim256/lsuv
+>>> LR* dim256/bitnet158
+>>> LR* dim256/sparse_sched
+>>> LR* dim256/gamma_offset
+>>> LR* dim256/tai
+>>> LR* dim256/tai_warmup
+>>> LR* dim320/fp16_control
+>>> LR* dim320/standard
+>>> LR* dim320/lsuv
+>>> LR* dim320/bitnet158
+>>> LR* dim320/sparse_sched
+>>> LR* dim320/gamma_offset
+>>> LR* dim320/tai
+>>> LR* dim320/tai_warmup
+>>> LR* dim384/fp16_control
+>>> LR* dim384/standard
+>>> LR* dim384/lsuv
+>>> LR* dim384/bitnet158
+>>> LR* dim384/sparse_sched
+>>> LR* dim384/gamma_offset
+>>> LR* dim384/tai
+>>> LR* dim384/tai_warmup
+>>> LR* dim512/fp16_control
+>>> LR* dim512/standard
+>>> LR* dim512/lsuv
+>>> LR* dim512/bitnet158
+>>> LR* dim512/sparse_sched
+>>> LR* dim512/gamma_offset
+>>> LR* dim512/tai
+>>> LR* dim512/tai_warmup
+>>> LR* dim640/fp16_control
+>>> LR* dim640/standard
+>>> LR* dim640/lsuv
+>>> LR* dim640/bitnet158
+>>> LR* dim640/sparse_sched
+>>> LR* dim640/gamma_offset
+>>> LR* dim640/tai
+>>> LR* dim640/tai_warmup
+>>> LR* dim768/fp16_control
+>>> LR* dim768/standard
+>>> LR* dim768/lsuv
+>>> LR* dim768/bitnet158
+>>> LR* dim768/sparse_sched
+>>> LR* dim768/gamma_offset
+>>> LR* dim768/tai
+>>> LR* dim768/tai_warmup
+>>> LR* dim896/fp16_control
+>>> LR* dim896/standard
+>>> LR* dim896/lsuv
+>>> LR* dim896/bitnet158
+>>> LR* dim896/sparse_sched
+>>> LR* dim896/gamma_offset
+>>> LR* dim896/tai
+>>> LR* dim896/tai_warmup
+>>> LR* dim1024/fp16_control
+>>> LR* dim1024/standard
+>>> LR* dim1024/lsuv
+>>> LR* dim1024/bitnet158
+>>> LR* dim1024/sparse_sched
+>>> LR* dim1024/gamma_offset
+>>> LR* dim1024/tai
+>>> LR* dim1024/tai_warmup
+>>> LR* dim1280/fp16_control
+>>> LR* dim1280/standard
+>>> LR* dim1280/lsuv
+>>> LR* dim1280/bitnet158
+>>> LR* dim1280/sparse_sched
+>>> LR* dim1280/gamma_offset
+>>> LR* dim1280/tai
+>>> LR* dim1280/tai_warmup
+>>> LR* dim1536/fp16_control
+>>> LR* dim1536/standard
+>>> LR* dim1536/lsuv

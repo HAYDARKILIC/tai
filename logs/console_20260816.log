@@ -1,0 +1,531 @@
+[tee] console mirrored to /content/drive/MyDrive/TAI_neuro/logs/console_20260816.log
+RUN_CFG: {
+  "session_budget_hours": null,
+  "token_budget": 20000000,
+  "batch_size": 32,
+  "seq_len": 512,
+  "warmup_steps": 120,
+  "peak_lr": 0.002,
+  "min_lr": 0.0001,
+  "weight_decay": 0.1,
+  "grad_clip": 1.0,
+  "plateau_tol": 0.01,
+  "plateau_frac": 0.4,
+  "plateau_min_tail": 5,
+  "eval_every_frac": 0.08,
+  "eval_batches_trace": 12,
+  "budget_check": true,
+  "budget_check_mult": 2.0,
+  "budget_check_seeds": [
+    1337,
+    2026,
+    7
+  ],
+  "seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718,
+    9001,
+    13,
+    271,
+    99,
+    555,
+    8,
+    31415,
+    777,
+    2024,
+    11
+  ],
+  "rho0_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "calib_seeds": [
+    100001,
+    100002,
+    100003
+  ],
+  "per_method_lr": true,
+  "wallclock_equal_h1": false,
+  "causal_intervention": true,
+  "plateau_tol_grid": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "plateau_frac_grid": [
+    0.1,
+    0.15,
+    0.25
+  ],
+  "lmeval_n": 300,
+  "lmeval_batch": 16,
+  "lmeval_max_seeds": 3,
+  "lr_cal_steps": 300,
+  "divergence_factor": 1.25,
+  "preflight_bench_compile": true,
+  "ARM_FULL_RUN": true,
+  "preflight_only": false,
+  "bonferroni_alpha": 0.0125,
+  "tost_margin": 0.02,
+  "tost_margin_frac": 0.1,
+  "primary_baseline": "bitnet158",
+  "secondary_baselines": [
+    "standard",
+    "lsuv",
+    "sparse_sched",
+    "gamma_offset"
+  ],
+  "sweep_arms_note": "rho0 sweep runs tai + gamma_offset (see Cell 12)",
+  "confirmatory_scale": "dim384",
+  "primary_family": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "warmup_start_grid": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "warmup_tau_grid": [
+    120,
+    240,
+    480
+  ],
+  "lr_grid": [
+    0.0005,
+    0.001,
+    0.002,
+    0.003,
+    0.005
+  ],
+  "lr_grid_adaptive": true,
+  "lr_grid_max_extend": 2,
+  "compile_min_steps": 600,
+  "lr_proxy_check_scale": "dim384",
+  "lr_proxy_check_seed": 100001,
+  "ablation_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "confirmatory_scales": [
+    "dim256",
+    "dim384",
+    "dim512",
+    "dim768"
+  ],
+  "exploratory_scales": [
+    "dim192",
+    "dim320",
+    "dim640",
+    "dim896",
+    "dim1024",
+    "dim1280",
+    "dim1536"
+  ],
+  "scaling_optin_scales": [
+    "dim2048"
+  ],
+  "scaling_budget_mode": "token_equal",
+  "exploratory_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "val_folds": 5,
+  "val_chunk_tokens": 50000,
+  "holdout_frac": 0.06,
+  "width_ctrl_layers": 6,
+  "width_ctrl_scales": [
+    "wc384",
+    "wc512",
+    "wc768",
+    "wc1024"
+  ],
+  "width_ctrl_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "h3_negative_control": true,
+  "rho0_sweep_seeds_full": true,
+  "fp16_init_ablation": true,
+  "equiv_margin": 0.05
+}
+Run-All safety helpers ready (_require / _exists).
+
+========================================================================
+RUN MODE: FULL EXPERIMENT (multi-session grid; checkpoint + resume to Drive)
+========================================================================
+THIS Run All will: Runs the full token-equal grid + sweeps + ablations; finished runs are skipped; exits at the session time budget.
+NEXT STEP: Re-run each session until the manifest reports complete. Idempotent: finished runs are never recomputed.
+session_budget_hours=None | ARM_FULL_RUN=True | preflight_only=False
+========================================================================
+Email: ENABLED
+>>> RUN STARTED
+Quant self-test OK (absmean + bitnet-b1.58): [-1.0, 0.0, 1.0]
+BitLinear ready (FP16 + BitNet-b1.58 switch + gamma-warmup hook).
+dim192: dim 192 layers 4 (~1.4M non-embed)
+dim256: dim 256 layers 4 (~2.5M non-embed)
+dim320: dim 320 layers 5 (~4.8M non-embed)
+dim384: dim 384 layers 6 (~8.3M non-embed)
+dim512: dim 512 layers 8 (~19.6M non-embed)
+dim640: dim 640 layers 9 (~34.4M non-embed)
+dim768: dim 768 layers 10 (~55.1M non-embed)
+dim896: dim 896 layers 11 (~82.4M non-embed)
+dim1024: dim 1024 layers 12 (~117.4M non-embed)
+dim1280: dim 1280 layers 14 (~214.1M non-embed)
+dim1536: dim 1536 layers 16 (~352.3M non-embed)
+dim2048: dim 2048 layers 20 (~782.9M non-embed)
+Cfg schema + geometry guards PASSED for 28 configs.
+(R6) gamma_offset calibration OK: rho0=0.69 -> c=0.9998 (locked baseline recovers c=1)
+TAI rho0=0.5 -> init active 0.500
+TAI rho0=0.9 -> init active 0.900
+>>> DATA CACHE HIT
+Split (R15): 58 interleaved held-out chunks of 50,000 tok (stride 16), guard=512 tok/side
+  TRAIN=45,041,120 tok | held-out total=2,900,000 tok (6.0%) | 5 sub-folds | primary VAL=600,000 tok
+  every sub-fold is disjoint from the SINGLE shared TRAIN -> R5's per-fold scores are genuinely held out
+Corpus: FineWeb-EDU (GPT-2 BPE) | 48000000 tokens | vocab 50257
+SIZES vocab rebound to 50257 -> {'dim192': 50257, 'dim256': 50257, 'dim320': 50257, 'dim384': 50257, 'dim512': 50257, 'dim640': 50257, 'dim768': 50257, 'dim896': 50257, 'dim1024': 50257, 'dim1280': 50257, 'dim1536': 50257, 'dim2048': 50257}
+Run-store ready. Existing runs: 832
+lm-eval downstream: ENABLED (arc_easy+hellaswag, loglik mode)
+[grid] confirmatory=['dim256', 'dim384', 'dim512', 'dim768'] (x15 seeds) | exploratory=['dim192', 'dim320', 'dim640', 'dim896', 'dim1024', 'dim1280', 'dim1536'] (x5 seeds)
+  steady-state dim192      64.9 ms/step | peak   8.4 GB | loss 10.15
+  steady-state dim512      93.5 ms/step | peak  10.1 GB | loss 8.94
+  steady-state dim1024    172.5 ms/step | peak  15.8 GB | loss 7.93
+  cost model: sec/step = 0.0598 + 1.078e-10 * FLOPs/token   (fixed overhead is 92% of the smallest scale)
+
+--- kernel profile (smallest scale, 8 steps) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                     aten::_log_softmax         0.10%       7.948ms         0.18%      13.888ms      20.187us        1.632s        28.92%        1.632s       2.373ms           688  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.632s        28.92%        1.632s       2.373ms           688  
+                                               aten::mm         6.34%     492.617ms         7.15%     555.849ms     111.170us        1.292s        22.89%        1.292s     258.420us          5000  
+void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.093s        19.37%        1.093s       5.941ms           184  
+                                            aten::copy_         1.77%     137.431ms         4.13%     320.971ms      20.932us     971.794ms        17.22%     976.111ms      63.657us         15334  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     821.562ms        14.56%     821.562ms     153.678us          5346  
+                                              aten::mul         3.91%     304.077ms         6.39%     496.953ms      19.278us     335.265ms         5.94%     335.352ms      13.009us         25778  
+                                              aten::add         1.73%     134.463ms         2.82%     219.308ms      17.522us     180.783ms         3.20%     180.926ms      14.456us         12516  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.275ms         3.12%     176.275ms      23.950us          7360  
+                                              aten::sub         1.53%     119.305ms         2.84%     220.981ms      21.446us     159.746ms         2.83%     160.082ms      15.536us         10304  
+                                              aten::div         1.48%     114.980ms         2.36%     183.435ms      20.173us     145.867ms         2.58%     146.029ms      16.060us          9093  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.411ms         2.47%     139.411ms      10.251us         13600  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.774s
+Self CUDA time total: 5.644s
+
+
+compile A/B: 1.29x speedup | val_loss delta 0.01294
+  -> RECOMMEND FAST_CFG['compile']=True
+
+====================================================================
+PREFLIGHT REPORT
+====================================================================
+{
+  "tokenizer": "gpt2-bpe",
+  "vocab": 50257,
+  "corpus_source": "FineWeb-EDU (GPT-2 BPE)",
+  "used_synthetic": false,
+  "lmeval_available": true,
+  "plateau_token_budget": 20000000,
+  "steps_per_run": 1221,
+  "lmeval_tasks": {
+    "arc_easy": 300,
+    "hellaswag": 300
+  },
+  "init_loss_check": 10.155,
+  "sec_per_step_raw_smoke": 0.4544,
+  "steady_state_sec_per_step": {
+    "dim192": 0.0649,
+    "dim512": 0.0935,
+    "dim1024": 0.1725
+  },
+  "cost_model": {
+    "fixed_overhead_sec": 0.0598,
+    "sec_per_flop_per_token": 1.0778381052834174e-10,
+    "probed_scales": [
+      "dim192",
+      "dim512",
+      "dim1024"
+    ]
+  },
+  "profile_top": [
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                     aten::_log_softmax         0.10%       7.948ms         0.18%      13.888ms      20.187us        1.632s        28.92%        1.632s       2.373ms           688  ",
+    "void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.632s        28.92%        1.632s       2.373ms           688  ",
+    "                                               aten::mm         6.34%     492.617ms         7.15%     555.849ms     111.170us        1.292s        22.89%        1.292s     258.420us          5000  ",
+    "void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.093s        19.37%        1.093s       5.941ms           184  ",
+    "                                            aten::copy_         1.77%     137.431ms         4.13%     320.971ms      20.932us     971.794ms        17.22%     976.111ms      63.657us         15334  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     821.562ms        14.56%     821.562ms     153.678us          5346  ",
+    "                                              aten::mul         3.91%     304.077ms         6.39%     496.953ms      19.278us     335.265ms         5.94%     335.352ms      13.009us         25778  ",
+    "                                              aten::add         1.73%     134.463ms         2.82%     219.308ms      17.522us     180.783ms         3.20%     180.926ms      14.456us         12516  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.275ms         3.12%     176.275ms      23.950us          7360  ",
+    "                                              aten::sub         1.53%     119.305ms         2.84%     220.981ms      21.446us     159.746ms         2.83%     160.082ms      15.536us         10304  ",
+    "                                              aten::div         1.48%     114.980ms         2.36%     183.435ms      20.173us     145.867ms         2.58%     146.029ms      16.060us          9093  ",
+    "void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.411ms         2.47%     139.411ms      10.251us         13600  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  "
+  ],
+  "compile_ab": {
+    "eager": {
+      "sec_per_step": 0.084,
+      "val_loss": 10.03496
+    },
+    "compiled": {
+      "sec_per_step": 0.0649,
+      "val_loss": 10.02202
+    }
+  },
+  "compile_speedup": 1.29,
+  "compile_loss_delta": 0.01294,
+  "smoke_run": {
+    "size": "dim192",
+    "sec_for_30_steps": 13.6,
+    "val_loss": 9.935,
+    "arc": NaN,
+    "hellaswag": NaN
+  },
+  "fast_mode": {
+    "fast": true,
+    "flash_sdpa": true,
+    "tf32": true,
+    "ce_chunks": 4,
+    "pin_batches": true,
+    "compile": true
+  },
+  "projection": {
+    "sec_per_step_smallest": 0.065,
+    "scale_weight_sum": 116.4,
+    "main_runs": 760,
+    "main_run_equivalents": 5985.4,
+    "aux_run_equivalents": 569,
+    "steps_per_run": 1221,
+    "projected_hours_all": 59.22,
+    "session_budget_hours": 24.0,
+    "fits_one_session": false,
+    "sessions_needed": 3
+  }
+}
+
+NOTE: ~59.22h > 24.0h/session -> ~3 sessions; resume is automatic, re-run this cell each session until complete.
+>>> PREFLIGHT DONE
+>>> PHASE START: main experiment
+[lr-grid] 83 stale LR* summary record(s) invalidated; the 5-point grid will be completed from cache + new runs only.
+>>> PHASE START: per-method LR calibration
+    [lr-ext] dim192/fp16_control: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/fp16_control
+    [lr-ext] dim192/standard: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/standard
+    [lr-ext] dim192/lsuv: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/lsuv
+    [lr-ext] dim192/bitnet158: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/bitnet158
+    [lr-ext] dim192/sparse_sched: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/sparse_sched
+    [lr-ext] dim192/gamma_offset: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/gamma_offset
+    [lr-ext] dim192/tai: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/tai
+    [lr-ext] dim192/tai_warmup: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim192/tai_warmup
+    [lr-ext] dim256/fp16_control: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/fp16_control
+    [lr-ext] dim256/standard: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/standard
+    [lr-ext] dim256/lsuv: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/lsuv
+    [lr-ext] dim256/bitnet158: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/bitnet158
+>>> LR* dim256/sparse_sched
+    [lr-ext] dim256/gamma_offset: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/gamma_offset
+    [lr-ext] dim256/tai: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/tai
+    [lr-ext] dim256/tai_warmup: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim256/tai_warmup
+>>> LR* dim320/fp16_control
+>>> LR* dim320/standard
+>>> LR* dim320/lsuv
+>>> LR* dim320/bitnet158
+>>> LR* dim320/sparse_sched
+    [lr-ext] dim320/gamma_offset: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim320/gamma_offset
+    [lr-ext] dim320/tai: argmin at boundary 5.0e-03 -> probing 1.0e-02
+>>> LR* dim320/tai
+>>> LR* dim320/tai_warmup
+>>> LR* dim384/fp16_control
+>>> LR* dim384/standard
+>>> LR* dim384/lsuv
+>>> LR* dim384/bitnet158
+>>> LR* dim384/sparse_sched
+>>> LR* dim384/gamma_offset
+>>> LR* dim384/tai
+>>> LR* dim384/tai_warmup
+>>> LR* dim512/fp16_control
+>>> LR* dim512/standard
+>>> LR* dim512/lsuv
+>>> LR* dim512/bitnet158
+>>> LR* dim512/sparse_sched
+>>> LR* dim512/gamma_offset
+>>> LR* dim512/tai
+>>> LR* dim512/tai_warmup
+>>> LR* dim640/fp16_control
+>>> LR* dim640/standard
+>>> LR* dim640/lsuv
+>>> LR* dim640/bitnet158
+>>> LR* dim640/sparse_sched
+>>> LR* dim640/gamma_offset
+>>> LR* dim640/tai
+>>> LR* dim640/tai_warmup
+>>> LR* dim768/fp16_control
+>>> LR* dim768/standard
+>>> LR* dim768/lsuv
+>>> LR* dim768/bitnet158
+>>> LR* dim768/sparse_sched
+>>> LR* dim768/gamma_offset
+>>> LR* dim768/tai
+>>> LR* dim768/tai_warmup
+>>> LR* dim896/fp16_control
+>>> LR* dim896/standard
+>>> LR* dim896/lsuv
+>>> LR* dim896/bitnet158
+>>> LR* dim896/sparse_sched
+>>> LR* dim896/gamma_offset
+>>> LR* dim896/tai
+>>> LR* dim896/tai_warmup
+>>> LR* dim1024/fp16_control
+>>> LR* dim1024/standard
+>>> LR* dim1024/lsuv
+>>> LR* dim1024/bitnet158
+>>> LR* dim1024/sparse_sched
+>>> LR* dim1024/gamma_offset
+>>> LR* dim1024/tai
+>>> LR* dim1024/tai_warmup
+>>> LR* dim1280/fp16_control
+>>> LR* dim1280/standard
+>>> LR* dim1280/lsuv
+>>> LR* dim1280/bitnet158
+>>> LR* dim1280/sparse_sched
+>>> LR* dim1280/gamma_offset
+>>> LR* dim1280/tai
+>>> LR* dim1280/tai_warmup
+    [lr-ext] dim1536/fp16_control: argmin at boundary 5.0e-04 -> probing 2.5e-04
+>>> LR* dim1536/fp16_control
+>>> LR* dim1536/standard
+>>> LR* dim1536/lsuv
+>>> LR* dim1536/bitnet158
+>>> LR* dim1536/sparse_sched
+>>> LR* dim1536/gamma_offset
+>>> LR* dim1536/tai
+>>> LR* dim1536/tai_warmup
+
+[lr-proxy] short-vs-full calibration check at dim384/standard:
+   short(300 steps) LR*=0.003 | full(1221 steps) LR*=3.0e-03 | agree=True | spearman=1.000
+>>> LR proxy check
+LR* table (peak lr chosen per scale x method):
+  ('dim1024', 'bitnet158'): 0.002
+  ('dim1024', 'fp16_control'): 0.001
+  ('dim1024', 'gamma_offset'): 0.002
+  ('dim1024', 'lsuv'): 0.002
+  ('dim1024', 'sparse_sched'): 0.001
+  ('dim1024', 'standard'): 0.002
+  ('dim1024', 'tai'): 0.002
+  ('dim1024', 'tai_warmup'): 0.002
+  ('dim1280', 'bitnet158'): 0.001
+  ('dim1280', 'fp16_control'): 0.001
+  ('dim1280', 'gamma_offset'): 0.001
+  ('dim1280', 'lsuv'): 0.001
+  ('dim1280', 'sparse_sched'): 0.001
+  ('dim1280', 'standard'): 0.001
+  ('dim1280', 'tai'): 0.001
+  ('dim1280', 'tai_warmup'): 0.001
+  ('dim1536', 'bitnet158'): 0.001
+  ('dim1536', 'fp16_control'): 0.0005
+  ('dim1536', 'gamma_offset'): 0.001
+  ('dim1536', 'lsuv'): 0.001
+  ('dim1536', 'sparse_sched'): 0.001
+  ('dim1536', 'standard'): 0.001
+  ('dim1536', 'tai'): 0.001
+  ('dim1536', 'tai_warmup'): 0.001
+  ('dim192', 'bitnet158'): 0.005
+  ('dim192', 'fp16_control'): 0.005
+  ('dim192', 'gamma_offset'): 0.005
+  ('dim192', 'lsuv'): 0.005
+  ('dim192', 'sparse_sched'): 0.005
+  ('dim192', 'standard'): 0.005
+  ('dim192', 'tai'): 0.005
+  ('dim192', 'tai_warmup'): 0.005
+  ('dim256', 'bitnet158'): 0.005
+  ('dim256', 'fp16_control'): 0.005
+  ('dim256', 'gamma_offset'): 0.005
+  ('dim256', 'lsuv'): 0.005
+  ('dim256', 'sparse_sched'): 0.003
+  ('dim256', 'standard'): 0.005
+  ('dim256', 'tai'): 0.005
+  ('dim256', 'tai_warmup'): 0.005
+  ('dim320', 'bitnet158'): 0.003
+  ('dim320', 'fp16_control'): 0.003
+  ('dim320', 'gamma_offset'): 0.005
+  ('dim320', 'lsuv'): 0.003
+  ('dim320', 'sparse_sched'): 0.003
+  ('dim320', 'standard'): 0.003
+  ('dim320', 'tai'): 0.005
+  ('dim320', 'tai_warmup'): 0.003
+  ('dim384', 'bitnet158'): 0.003
+  ('dim384', 'fp16_control'): 0.003
+  ('dim384', 'gamma_offset'): 0.003
+  ('dim384', 'lsuv'): 0.003
+  ('dim384', 'sparse_sched'): 0.003
+  ('dim384', 'standard'): 0.003
+  ('dim384', 'tai'): 0.003
+  ('dim384', 'tai_warmup'): 0.003
+  ('dim512', 'bitnet158'): 0.003
+  ('dim512', 'fp16_control'): 0.002
+  ('dim512', 'gamma_offset'): 0.003
+  ('dim512', 'lsuv'): 0.003
+  ('dim512', 'sparse_sched'): 0.002
+  ('dim512', 'standard'): 0.003
+  ('dim512', 'tai'): 0.003
+  ('dim512', 'tai_warmup'): 0.002
+  ('dim640', 'bitnet158'): 0.002
+  ('dim640', 'fp16_control'): 0.002
+  ('dim640', 'gamma_offset'): 0.002
+  ('dim640', 'lsuv'): 0.002
+  ('dim640', 'sparse_sched'): 0.002
+  ('dim640', 'standard'): 0.002
+  ('dim640', 'tai'): 0.002
+  ('dim640', 'tai_warmup'): 0.002
+  ('dim768', 'bitnet158'): 0.002
+  ('dim768', 'fp16_control'): 0.001
+  ('dim768', 'gamma_offset'): 0.002
+  ('dim768', 'lsuv'): 0.002
+  ('dim768', 'sparse_sched'): 0.001
+  ('dim768', 'standard'): 0.002
+  ('dim768', 'tai'): 0.002
+  ('dim768', 'tai_warmup'): 0.002
+  ('dim896', 'bitnet158'): 0.002
+  ('dim896', 'fp16_control'): 0.001
+  ('dim896', 'gamma_offset'): 0.002
+  ('dim896', 'lsuv'): 0.002
+  ('dim896', 'sparse_sched'): 0.001
+  ('dim896', 'standard'): 0.002
+  ('dim896', 'tai'): 0.002
+  ('dim896', 'tai_warmup'): 0.002
+>>> PHASE DONE: per-method LR calibration

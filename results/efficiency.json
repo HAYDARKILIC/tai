@@ -1,0 +1,27 @@
+{
+  "deployment_model_theoretical": {
+    "quantized_params_M": 782.91,
+    "fp16_size_MB": 1493.28,
+    "ternary_info_size_MB": 147.92,
+    "ternary_2bit_size_MB": 186.66,
+    "bits_per_weight_info": 1.585,
+    "bits_per_weight_packed": 2.0,
+    "compression_vs_fp16_info": 10.09,
+    "compression_vs_fp16_2bit": 8.0
+  },
+  "simulation_cost_measured": {
+    "fp16_control": {
+      "latency_ms": 430.88,
+      "tokens_per_sec": 38025.0,
+      "peak_mem_GB": 3.336,
+      "sparsity_pct": 0.0
+    },
+    "ternary_simulated_tai": {
+      "latency_ms": 718.86,
+      "tokens_per_sec": 22792.0,
+      "peak_mem_GB": 3.336,
+      "sparsity_pct": 25.0
+    }
+  },
+  "caveat": "measured numbers are the cost of SIMULATING ternary in bf16 (STE keeps bf16 master weights and adds quant/norm work); they are NOT ternary inference numbers and must not be read as such. No ternary kernel was benchmarked in this work."
+}

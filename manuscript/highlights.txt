@@ -1,0 +1,12 @@
+Highlights
+
+The Ternary Operating Point: Threshold Control and Annealing in 1.58-Bit
+Language Models
+
+Haydar Kilic
+
+- Absmean ternary training locks the initial active weight fraction at 0.69
+- A closed form maps the threshold constant to the operating point it induces
+- Retention, not correlation: 93-95% of init-time sparsity control is erased
+- A threshold offset retains the operating point in full; initialization does not
+- Early threshold annealing cuts loss 0.060-0.201 nats, 11/11 scales at 20M tokens

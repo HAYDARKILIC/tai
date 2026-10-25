@@ -1,0 +1,23 @@
+# The tokenized corpus is 92 MB and fully regenerable from the public
+# FineWeb-EDU sample; see data/README.md.
+data/*.npy
+
+# LaTeX build products
+manuscript/*.aux
+manuscript/*.log
+manuscript/*.out
+manuscript/*.spl
+manuscript/*.blg
+manuscript/*.toc
+manuscript/*.synctex.gz
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

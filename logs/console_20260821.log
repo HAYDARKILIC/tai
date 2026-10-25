@@ -1,0 +1,2345 @@
+[tee] console mirrored to /content/drive/MyDrive/TAI_neuro/logs/console_20260821.log
+RUN_CFG: {
+  "session_budget_hours": null,
+  "token_budget": 20000000,
+  "batch_size": 32,
+  "seq_len": 512,
+  "warmup_steps": 120,
+  "peak_lr": 0.002,
+  "min_lr": 0.0001,
+  "weight_decay": 0.1,
+  "grad_clip": 1.0,
+  "plateau_tol": 0.01,
+  "plateau_frac": 0.4,
+  "plateau_min_tail": 5,
+  "eval_every_frac": 0.08,
+  "eval_batches_trace": 12,
+  "budget_check": true,
+  "budget_check_mult": 2.0,
+  "budget_check_seeds": [
+    1337,
+    2026,
+    7
+  ],
+  "seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718,
+    9001,
+    13,
+    271,
+    99,
+    555,
+    8,
+    31415,
+    777,
+    2024,
+    11
+  ],
+  "rho0_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "calib_seeds": [
+    100001,
+    100002,
+    100003
+  ],
+  "per_method_lr": true,
+  "wallclock_equal_h1": false,
+  "causal_intervention": true,
+  "plateau_tol_grid": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "plateau_frac_grid": [
+    0.1,
+    0.15,
+    0.25
+  ],
+  "lmeval_n": 300,
+  "lmeval_batch": 16,
+  "lmeval_max_seeds": 3,
+  "lr_cal_steps": 300,
+  "divergence_factor": 1.25,
+  "preflight_bench_compile": true,
+  "ARM_FULL_RUN": true,
+  "preflight_only": false,
+  "bonferroni_alpha": 0.0125,
+  "tost_margin": 0.02,
+  "tost_margin_frac": 0.1,
+  "primary_baseline": "bitnet158",
+  "secondary_baselines": [
+    "standard",
+    "lsuv",
+    "sparse_sched",
+    "gamma_offset"
+  ],
+  "sweep_arms_note": "rho0 sweep runs tai + gamma_offset (see Cell 12)",
+  "confirmatory_scale": "dim384",
+  "primary_family": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "warmup_start_grid": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "warmup_tau_grid": [
+    120,
+    240,
+    480
+  ],
+  "lr_grid": [
+    0.0005,
+    0.001,
+    0.002,
+    0.003,
+    0.005
+  ],
+  "lr_grid_adaptive": true,
+  "lr_grid_max_extend": 2,
+  "compile_min_steps": 600,
+  "lr_proxy_check_scale": "dim384",
+  "lr_proxy_check_seed": 100001,
+  "ablation_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "confirmatory_scales": [
+    "dim256",
+    "dim384",
+    "dim512",
+    "dim768"
+  ],
+  "exploratory_scales": [
+    "dim192",
+    "dim320",
+    "dim640",
+    "dim896",
+    "dim1024",
+    "dim1280",
+    "dim1536"
+  ],
+  "scaling_optin_scales": [
+    "dim2048"
+  ],
+  "scaling_budget_mode": "token_equal",
+  "exploratory_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "val_folds": 5,
+  "val_chunk_tokens": 50000,
+  "holdout_frac": 0.06,
+  "width_ctrl_layers": 6,
+  "width_ctrl_scales": [
+    "wc384",
+    "wc512",
+    "wc768",
+    "wc1024"
+  ],
+  "width_ctrl_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "h3_negative_control": true,
+  "rho0_sweep_seeds_full": true,
+  "fp16_init_ablation": true,
+  "equiv_margin": 0.05
+}
+Run-All safety helpers ready (_require / _exists).
+
+========================================================================
+RUN MODE: FULL EXPERIMENT (multi-session grid; checkpoint + resume to Drive)
+========================================================================
+THIS Run All will: Runs the full token-equal grid + sweeps + ablations; finished runs are skipped; exits at the session time budget.
+NEXT STEP: Re-run each session until the manifest reports complete. Idempotent: finished runs are never recomputed.
+session_budget_hours=None | ARM_FULL_RUN=True | preflight_only=False
+========================================================================
+Email: ENABLED
+>>> RUN STARTED
+Quant self-test OK (absmean + bitnet-b1.58): [-1.0, 0.0, 1.0]
+BitLinear ready (FP16 + BitNet-b1.58 switch + gamma-warmup hook).
+dim192: dim 192 layers 4 (~1.4M non-embed)
+dim256: dim 256 layers 4 (~2.5M non-embed)
+dim320: dim 320 layers 5 (~4.8M non-embed)
+dim384: dim 384 layers 6 (~8.3M non-embed)
+dim512: dim 512 layers 8 (~19.6M non-embed)
+dim640: dim 640 layers 9 (~34.4M non-embed)
+dim768: dim 768 layers 10 (~55.1M non-embed)
+dim896: dim 896 layers 11 (~82.4M non-embed)
+dim1024: dim 1024 layers 12 (~117.4M non-embed)
+dim1280: dim 1280 layers 14 (~214.1M non-embed)
+dim1536: dim 1536 layers 16 (~352.3M non-embed)
+dim2048: dim 2048 layers 20 (~782.9M non-embed)
+Cfg schema + geometry guards PASSED for 28 configs.
+(R6) gamma_offset calibration OK: rho0=0.69 -> c=0.9998 (locked baseline recovers c=1)
+TAI rho0=0.5 -> init active 0.500
+TAI rho0=0.9 -> init active 0.900
+>>> DATA CACHE HIT
+Split (R15): 58 interleaved held-out chunks of 50,000 tok (stride 16), guard=512 tok/side
+  TRAIN=45,041,120 tok | held-out total=2,900,000 tok (6.0%) | 5 sub-folds | primary VAL=600,000 tok
+  every sub-fold is disjoint from the SINGLE shared TRAIN -> R5's per-fold scores are genuinely held out
+Corpus: FineWeb-EDU (GPT-2 BPE) | 48000000 tokens | vocab 50257
+SIZES vocab rebound to 50257 -> {'dim192': 50257, 'dim256': 50257, 'dim320': 50257, 'dim384': 50257, 'dim512': 50257, 'dim640': 50257, 'dim768': 50257, 'dim896': 50257, 'dim1024': 50257, 'dim1280': 50257, 'dim1536': 50257, 'dim2048': 50257}
+Run-store ready. Existing runs: 2836
+lm-eval downstream: ENABLED (arc_easy+hellaswag, loglik mode)
+[grid] confirmatory=['dim256', 'dim384', 'dim512', 'dim768'] (x15 seeds) | exploratory=['dim192', 'dim320', 'dim640', 'dim896', 'dim1024', 'dim1280', 'dim1536'] (x5 seeds)
+  steady-state dim192      64.9 ms/step | peak   8.4 GB | loss 10.15
+  steady-state dim512      93.4 ms/step | peak  10.1 GB | loss 8.94
+  steady-state dim1024    172.5 ms/step | peak  15.8 GB | loss 7.93
+  cost model: sec/step = 0.0598 + 1.079e-10 * FLOPs/token   (fixed overhead is 92% of the smallest scale)
+
+--- kernel profile (smallest scale, 8 steps) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                     aten::_log_softmax         0.10%       7.586ms         0.17%      13.308ms      19.342us        1.631s        28.92%        1.631s       2.370ms           688  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.631s        28.92%        1.631s       2.370ms           688  
+                                               aten::mm         6.24%     479.038ms         7.06%     542.621ms     108.524us        1.292s        22.90%        1.292s     258.325us          5000  
+void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.094s        19.39%        1.094s       5.943ms           184  
+                                            aten::copy_         1.74%     133.649ms         4.11%     315.618ms      20.583us     970.946ms        17.22%     975.184ms      63.596us         15334  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     820.965ms        14.56%     820.965ms     153.566us          5346  
+                                              aten::mul         3.86%     296.742ms         6.40%     491.884ms      19.082us     334.271ms         5.93%     334.385ms      12.972us         25778  
+                                              aten::add         1.72%     132.174ms         2.84%     217.909ms      17.410us     180.717ms         3.20%     180.862ms      14.450us         12516  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.007ms         3.12%     176.007ms      23.914us          7360  
+                                              aten::sub         1.52%     117.102ms         2.87%     220.177ms      21.368us     159.820ms         2.83%     160.204ms      15.548us         10304  
+                                              aten::div         1.44%     110.491ms         2.32%     177.900ms      19.564us     145.343ms         2.58%     145.458ms      15.997us          9093  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.662ms         2.48%     139.662ms      10.269us         13600  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.682s
+Self CUDA time total: 5.639s
+
+
+compile A/B: 1.29x speedup | val_loss delta 0.01329
+  -> RECOMMEND FAST_CFG['compile']=True
+
+====================================================================
+PREFLIGHT REPORT
+====================================================================
+{
+  "tokenizer": "gpt2-bpe",
+  "vocab": 50257,
+  "corpus_source": "FineWeb-EDU (GPT-2 BPE)",
+  "used_synthetic": false,
+  "lmeval_available": true,
+  "plateau_token_budget": 20000000,
+  "steps_per_run": 1221,
+  "lmeval_tasks": {
+    "arc_easy": 300,
+    "hellaswag": 300
+  },
+  "init_loss_check": 10.155,
+  "sec_per_step_raw_smoke": 0.446,
+  "steady_state_sec_per_step": {
+    "dim192": 0.0649,
+    "dim512": 0.0934,
+    "dim1024": 0.1725
+  },
+  "cost_model": {
+    "fixed_overhead_sec": 0.0598,
+    "sec_per_flop_per_token": 1.0788313496282407e-10,
+    "probed_scales": [
+      "dim192",
+      "dim512",
+      "dim1024"
+    ]
+  },
+  "profile_top": [
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                     aten::_log_softmax         0.10%       7.586ms         0.17%      13.308ms      19.342us        1.631s        28.92%        1.631s       2.370ms           688  ",
+    "void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.631s        28.92%        1.631s       2.370ms           688  ",
+    "                                               aten::mm         6.24%     479.038ms         7.06%     542.621ms     108.524us        1.292s        22.90%        1.292s     258.325us          5000  ",
+    "void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.094s        19.39%        1.094s       5.943ms           184  ",
+    "                                            aten::copy_         1.74%     133.649ms         4.11%     315.618ms      20.583us     970.946ms        17.22%     975.184ms      63.596us         15334  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     820.965ms        14.56%     820.965ms     153.566us          5346  ",
+    "                                              aten::mul         3.86%     296.742ms         6.40%     491.884ms      19.082us     334.271ms         5.93%     334.385ms      12.972us         25778  ",
+    "                                              aten::add         1.72%     132.174ms         2.84%     217.909ms      17.410us     180.717ms         3.20%     180.862ms      14.450us         12516  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.007ms         3.12%     176.007ms      23.914us          7360  ",
+    "                                              aten::sub         1.52%     117.102ms         2.87%     220.177ms      21.368us     159.820ms         2.83%     160.204ms      15.548us         10304  ",
+    "                                              aten::div         1.44%     110.491ms         2.32%     177.900ms      19.564us     145.343ms         2.58%     145.458ms      15.997us          9093  ",
+    "void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.662ms         2.48%     139.662ms      10.269us         13600  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  "
+  ],
+  "compile_ab": {
+    "eager": {
+      "sec_per_step": 0.0839,
+      "val_loss": 10.03503
+    },
+    "compiled": {
+      "sec_per_step": 0.0649,
+      "val_loss": 10.02174
+    }
+  },
+  "compile_speedup": 1.29,
+  "compile_loss_delta": 0.01329,
+  "smoke_run": {
+    "size": "dim192",
+    "sec_for_30_steps": 13.4,
+    "val_loss": 9.935,
+    "arc": NaN,
+    "hellaswag": NaN
+  },
+  "fast_mode": {
+    "fast": true,
+    "flash_sdpa": true,
+    "tf32": true,
+    "ce_chunks": 4,
+    "pin_batches": true,
+    "compile": true
+  },
+  "projection": {
+    "sec_per_step_smallest": 0.065,
+    "scale_weight_sum": 116.4,
+    "main_runs": 760,
+    "main_run_equivalents": 5985.4,
+    "aux_run_equivalents": 569,
+    "steps_per_run": 1221,
+    "projected_hours_all": 59.21,
+    "session_budget_hours": 24.0,
+    "fits_one_session": false,
+    "sessions_needed": 3
+  }
+}
+
+NOTE: ~59.21h > 24.0h/session -> ~3 sessions; resume is automatic, re-run this cell each session until complete.
+>>> PREFLIGHT DONE
+>>> PHASE START: main experiment
+>>> PHASE START: per-method LR calibration
+
+[lr-proxy] short-vs-full calibration check at dim384/standard:
+   short(300 steps) LR*=0.003 | full(1221 steps) LR*=3.0e-03 | agree=True | spearman=1.000
+>>> LR proxy check
+LR* table (peak lr chosen per scale x method):
+  ('dim1024', 'bitnet158'): 0.002
+  ('dim1024', 'fp16_control'): 0.001
+  ('dim1024', 'gamma_offset'): 0.002
+  ('dim1024', 'lsuv'): 0.002
+  ('dim1024', 'sparse_sched'): 0.001
+  ('dim1024', 'standard'): 0.002
+  ('dim1024', 'tai'): 0.002
+  ('dim1024', 'tai_warmup'): 0.002
+  ('dim1280', 'bitnet158'): 0.001
+  ('dim1280', 'fp16_control'): 0.001
+  ('dim1280', 'gamma_offset'): 0.001
+  ('dim1280', 'lsuv'): 0.001
+  ('dim1280', 'sparse_sched'): 0.001
+  ('dim1280', 'standard'): 0.001
+  ('dim1280', 'tai'): 0.001
+  ('dim1280', 'tai_warmup'): 0.001
+  ('dim1536', 'bitnet158'): 0.001
+  ('dim1536', 'fp16_control'): 0.0005
+  ('dim1536', 'gamma_offset'): 0.001
+  ('dim1536', 'lsuv'): 0.001
+  ('dim1536', 'sparse_sched'): 0.001
+  ('dim1536', 'standard'): 0.001
+  ('dim1536', 'tai'): 0.001
+  ('dim1536', 'tai_warmup'): 0.001
+  ('dim192', 'bitnet158'): 0.005
+  ('dim192', 'fp16_control'): 0.005
+  ('dim192', 'gamma_offset'): 0.005
+  ('dim192', 'lsuv'): 0.005
+  ('dim192', 'sparse_sched'): 0.005
+  ('dim192', 'standard'): 0.005
+  ('dim192', 'tai'): 0.005
+  ('dim192', 'tai_warmup'): 0.005
+  ('dim256', 'bitnet158'): 0.005
+  ('dim256', 'fp16_control'): 0.005
+  ('dim256', 'gamma_offset'): 0.005
+  ('dim256', 'lsuv'): 0.005
+  ('dim256', 'sparse_sched'): 0.003
+  ('dim256', 'standard'): 0.005
+  ('dim256', 'tai'): 0.005
+  ('dim256', 'tai_warmup'): 0.005
+  ('dim320', 'bitnet158'): 0.003
+  ('dim320', 'fp16_control'): 0.003
+  ('dim320', 'gamma_offset'): 0.005
+  ('dim320', 'lsuv'): 0.003
+  ('dim320', 'sparse_sched'): 0.003
+  ('dim320', 'standard'): 0.003
+  ('dim320', 'tai'): 0.005
+  ('dim320', 'tai_warmup'): 0.003
+  ('dim384', 'bitnet158'): 0.003
+  ('dim384', 'fp16_control'): 0.003
+  ('dim384', 'gamma_offset'): 0.003
+  ('dim384', 'lsuv'): 0.003
+  ('dim384', 'sparse_sched'): 0.003
+  ('dim384', 'standard'): 0.003
+  ('dim384', 'tai'): 0.003
+  ('dim384', 'tai_warmup'): 0.003
+  ('dim512', 'bitnet158'): 0.003
+  ('dim512', 'fp16_control'): 0.002
+  ('dim512', 'gamma_offset'): 0.003
+  ('dim512', 'lsuv'): 0.003
+  ('dim512', 'sparse_sched'): 0.002
+  ('dim512', 'standard'): 0.003
+  ('dim512', 'tai'): 0.003
+  ('dim512', 'tai_warmup'): 0.002
+  ('dim640', 'bitnet158'): 0.002
+  ('dim640', 'fp16_control'): 0.002
+  ('dim640', 'gamma_offset'): 0.002
+  ('dim640', 'lsuv'): 0.002
+  ('dim640', 'sparse_sched'): 0.002
+  ('dim640', 'standard'): 0.002
+  ('dim640', 'tai'): 0.002
+  ('dim640', 'tai_warmup'): 0.002
+  ('dim768', 'bitnet158'): 0.002
+  ('dim768', 'fp16_control'): 0.001
+  ('dim768', 'gamma_offset'): 0.002
+  ('dim768', 'lsuv'): 0.002
+  ('dim768', 'sparse_sched'): 0.001
+  ('dim768', 'standard'): 0.002
+  ('dim768', 'tai'): 0.002
+  ('dim768', 'tai_warmup'): 0.002
+  ('dim896', 'bitnet158'): 0.002
+  ('dim896', 'fp16_control'): 0.001
+  ('dim896', 'gamma_offset'): 0.002
+  ('dim896', 'lsuv'): 0.002
+  ('dim896', 'sparse_sched'): 0.001
+  ('dim896', 'standard'): 0.002
+  ('dim896', 'tai'): 0.002
+  ('dim896', 'tai_warmup'): 0.002
+>>> PHASE DONE: per-method LR calibration
+STEPS/run=1221 | H1 per-scale target loss (60pct, median/calib):
+    dim192: 5.654
+    dim256: 5.615
+    dim320: 5.597
+    dim384: 5.622
+    dim512: 5.593
+    dim640: 5.558
+    dim768: 5.564
+    dim896: 5.664
+    dim1024: 5.706
+    dim1280: 5.571
+    dim1536: 5.620
+>>> BLOCK START: dim192/fp16_control
+>>> BLOCK START: dim192/standard
+>>> BLOCK START: dim192/lsuv
+>>> BLOCK START: dim192/bitnet158
+>>> BLOCK START: dim192/sparse_sched
+>>> BLOCK START: dim192/gamma_offset
+>>> BLOCK START: dim192/tai
+>>> BLOCK START: dim192/tai_warmup
+>>> BLOCK START: dim256/fp16_control
+>>> BLOCK START: dim256/standard
+>>> BLOCK START: dim256/lsuv
+>>> BLOCK START: dim256/bitnet158
+>>> BLOCK START: dim256/sparse_sched
+>>> BLOCK START: dim256/gamma_offset
+>>> BLOCK START: dim256/tai
+>>> BLOCK START: dim256/tai_warmup
+>>> BLOCK START: dim320/fp16_control
+>>> BLOCK START: dim320/standard
+>>> BLOCK START: dim320/lsuv
+>>> BLOCK START: dim320/bitnet158
+>>> BLOCK START: dim320/sparse_sched
+>>> BLOCK START: dim320/gamma_offset
+>>> BLOCK START: dim320/tai
+>>> BLOCK START: dim320/tai_warmup
+>>> BLOCK START: dim384/fp16_control
+>>> BLOCK START: dim384/standard
+>>> BLOCK START: dim384/lsuv
+>>> BLOCK START: dim384/bitnet158
+>>> BLOCK START: dim384/sparse_sched
+>>> BLOCK START: dim384/gamma_offset
+>>> BLOCK START: dim384/tai
+>>> BLOCK START: dim384/tai_warmup
+>>> BLOCK START: dim512/fp16_control
+>>> BLOCK START: dim512/standard
+>>> BLOCK START: dim512/lsuv
+>>> BLOCK START: dim512/bitnet158
+>>> BLOCK START: dim512/sparse_sched
+>>> BLOCK START: dim512/gamma_offset
+>>> BLOCK START: dim512/tai
+>>> BLOCK START: dim512/tai_warmup
+>>> BLOCK START: dim640/fp16_control
+>>> BLOCK START: dim640/standard
+>>> BLOCK START: dim640/lsuv
+>>> BLOCK START: dim640/bitnet158
+>>> BLOCK START: dim640/sparse_sched
+>>> BLOCK START: dim640/gamma_offset
+>>> BLOCK START: dim640/tai
+>>> BLOCK START: dim640/tai_warmup
+>>> BLOCK START: dim768/fp16_control
+>>> BLOCK START: dim768/standard
+>>> BLOCK START: dim768/lsuv
+>>> BLOCK START: dim768/bitnet158
+>>> BLOCK START: dim768/sparse_sched
+>>> BLOCK START: dim768/gamma_offset
+>>> BLOCK START: dim768/tai
+>>> BLOCK START: dim768/tai_warmup
+>>> BLOCK START: dim896/fp16_control
+>>> BLOCK START: dim896/standard
+>>> BLOCK START: dim896/lsuv
+>>> BLOCK START: dim896/bitnet158
+>>> BLOCK START: dim896/sparse_sched
+>>> BLOCK START: dim896/gamma_offset
+>>> BLOCK START: dim896/tai
+>>> BLOCK START: dim896/tai_warmup
+>>> BLOCK START: dim1024/fp16_control
+>>> BLOCK START: dim1024/standard
+>>> BLOCK START: dim1024/lsuv
+>>> BLOCK START: dim1024/bitnet158
+>>> BLOCK START: dim1024/sparse_sched
+>>> BLOCK START: dim1024/gamma_offset
+>>> BLOCK START: dim1024/tai
+>>> BLOCK START: dim1024/tai_warmup
+>>> BLOCK START: dim1280/fp16_control
+>>> BLOCK START: dim1280/standard
+>>> BLOCK START: dim1280/lsuv
+>>> BLOCK START: dim1280/bitnet158
+>>> BLOCK START: dim1280/sparse_sched
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1280/gamma_offset
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1280/tai
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1280/tai_warmup
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/fp16_control
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/standard
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/lsuv
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/bitnet158
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/sparse_sched
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/gamma_offset
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/tai
+   email failed (continuing): Connection unexpectedly closed
+>>> BLOCK START: dim1536/tai_warmup
+   email failed (continuing): Connection unexpectedly closed
+Main experiment complete: 760 runs (0 plateau-verified).
+>>> PHASE DONE: main experiment
+>>> PHASE START: budget sufficiency (2x tokens)
+==========================================================================
+(R3) BUDGET SUFFICIENCY at dim384: val_loss(1221 steps) - val_loss(2442 steps)
+     positive = the model was STILL IMPROVING past the 20M-token budget
+     H2 equivalence margin = 0.0200 nats
+==========================================================================
+  bitnet158       : +0.3153 nats (n=3, sd=0.0086)  -> EXCEEDS MARGIN
+  tai_warmup      : +0.2865 nats (n=3, sd=0.0010)  -> EXCEEDS MARGIN
+
+  VERDICT: at least one arm improved by MORE than the margin when given 2x
+           tokens => 20M tokens is NOT convergence. H2 is hereby RE-STATED as
+           'quality at a fixed 20M-token budget' (a token-equal claim, still
+           valid and still falsifiable), and every downstream mention of
+           'at convergence' must be read in that weaker sense. Recorded in
+           the manifest as h2_wording_supported=false.
+>>> PHASE DONE: budget sufficiency
+>>> PHASE START: rho0 sweep
+  [retention] dim384/tai: final = 0.2893 + 0.0522*initial (R2=0.931) -> 5.2% of the intervention survives; attractor at 0.3052
+  [retention] dim384/gamma_offset: final = 0.0092 + 1.0031*initial (R2=1.000) -> 100.3% of the intervention survives; attractor at -2.9402
+  [retention] dim768/tai: final = 0.2790 + 0.0691*initial (R2=0.959) -> 6.9% of the intervention survives; attractor at 0.2997
+  [retention] dim768/gamma_offset: final = 0.0053 + 1.0060*initial (R2=1.000) -> 100.6% of the intervention survives; attractor at -0.8916
+H3 (does the initial operating point persist?):
+    pooled Spearman(rho0,final_sparsity)=-0.983 (p=4.296e-66)   [expected NEGATIVE: higher rho0 = fewer zeros]
+    per-seed mean Spearman=-0.996 95% CI [-1.000,-0.989] (n_seeds=15)
+    fraction of seeds monotone DECREASING in rho0 = 0.93
+    RETENTION = 0.053  (2.65 pt of final spread from 50 pt of initial swing)
+    mean final sparsity across all rho0 = 0.3075   [the `standard` arm lands near 0.313 unaided]
+    -> H3 AS PRE-REGISTERED IS NOT SUPPORTED IN ITS STRONG FORM. The ordering is perfectly reproducible, but only 5% of the intervention survives;
+       final sparsity is dominated by an attractor near 0.308, not by rho0. Report as a bounded residual effect.
+    [negative control] across-rho0 sparsity range (signal) = 0.0265 vs within-rho0 across-seed SD (placebo) = 0.0006  -> signal/noise = 44.9x
+    (SNR >> 1 => sparsity is driven by the rho0 intervention, not init-RNG nuisance.)
+H3 STRONG FALSIFICATION (label-shuffled placebo init):
+    placebo mean per-seed Spearman = +0.135 (expected ~0)
+    real > placebo in 0/15 seeds (sign-test p=6.104e-05)
+H3 (#B) cross-scale causal effect (per-seed Spearman rho0->sparsity):
+    dim384: mean=-0.996 sd=0.015 (n_seeds=15)
+    dim768: mean=-1.000 sd=0.000 (n_seeds=15)
+    scale-invariance test (dim384 vs dim768): Welch t=+1.00, p=0.334  (LARGE p => effect statistically indistinguishable across scale => control is scale-invariant)
+H5 Pareto frontier (rho0 -> val_loss +/- sd, sparsity +/- sd); * = non-dominated:
+  * rho0 0.40 -> loss 5.2519+/-0.0198, spars 32.4+/-0.1%
+  * rho0 0.50 -> loss 5.2171+/-0.0335, spars 31.4+/-0.0%
+  * rho0 0.60 -> loss 5.1955+/-0.0308, spars 30.7+/-0.0%
+  * rho0 0.70 -> loss 5.1875+/-0.0261, spars 30.2+/-0.0%
+  * rho0 0.80 -> loss 5.1786+/-0.0396, spars 29.9+/-0.1%
+  * rho0 0.90 -> loss 5.1555+/-0.0251, spars 29.8+/-0.1%
+H5 rho0* (min loss, sparsity>=30%): rho0=0.70 loss 5.1875 spars 30.2%
+    selection stability (bootstrap P[rho0 is optimal]): {'0.40': 0.0, '0.50': 0.002, '0.60': 0.237, '0.70': 0.758, '0.80': 0.003, '0.90': 0.0}
+
+----------------------------------------------------------------------
+(R6) MECHANISM COMPARISON at dim384 — TAI vs gamma_offset (EXPLORATORY)
+----------------------------------------------------------------------
+  gamma_offset sparsity control: per-seed mean Spearman(rho0,sparsity)=-1.000 (n_seeds=15)
+  TAI          sparsity control: per-seed mean Spearman=-0.996 (n_seeds=15)
+  => Only TAI reliably controls rho0
+
+  val_loss difference (TAI - gamma_offset), paired over 90 (rho0,seed) cells:
+    mean=+0.0610 nats  95% CI [+0.0474,+0.0742]  (paired t p=1.064e-13)
+    VERDICT: gamma_offset better -> the SIMPLER method wins. Report it; the
+             paper's recommendation becomes threshold offset, not TAI init.
+>>> PHASE DONE: rho0 sweep
+>>> PHASE START: rho0* feedback
+>>> BLOCK START: dim768/tai_star
+>>> BLOCK START: dim384/tai_star
+R2 rho0* feedback complete: tai_star (rho0=0.7) on ['dim768', 'dim384']
+>>> PHASE DONE: rho0* feedback
+>>> PHASE START: cross-architecture (decoder_v2)
+>>> BLOCK START: v2/dim256/bitnet158
+>>> BLOCK START: v2/dim256/gamma_offset
+>>> BLOCK START: v2/dim256/tai_warmup
+>>> BLOCK START: v2/dim384/bitnet158
+>>> BLOCK START: v2/dim384/gamma_offset
+>>> BLOCK START: v2/dim384/tai_warmup
+R1 cross-architecture (decoder_v2) — TAI effect direction:
+  dim256 (v2): dLoss +0.0758 | t-p 0.0002 | TAI better (n=15)
+  dim384 (v2): dLoss +0.0347 | t-p 0.0008 | TAI better (n=15)
+  dim192: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim256: v1 sign='TAI better' vs v2 sign='TAI better' -> CONSISTENT
+  dim320: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim384: v1 sign='TAI better' vs v2 sign='TAI better' -> CONSISTENT
+  dim512: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim640: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim768: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim896: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim1024: v1 sign='baseline better' vs v2 sign='NA' -> DIFFERS
+  dim1280: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim1536: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+>>> PHASE DONE: cross-architecture
+
+EXTERNAL VALIDITY (direction): TAI better in 12/13 independent (architecture x scale) cells, binomial p=0.0034
+    cells: v2:dim256+, v2:dim384+, v1:dim192+, v1:dim256+, v1:dim320+, v1:dim384+, v1:dim512+, v1:dim640+, v1:dim768+, v1:dim896+, v1:dim1024-, v1:dim1280+, v1:dim1536+
+  [skip] no runs recorded for dim2048 -- not analysed.
+  [EXPLORATORY scale]
+
+===== dim192 =====
+  fp16_control  loss 5.3434+/-0.0434 std 0.0495 spars 0.0% s2t 524 nt-acc 0.204
+  standard      loss 5.2946+/-0.0354 std 0.0404 spars 32.9% s2t 512 nt-acc 0.208
+  lsuv          loss 5.2638+/-0.0298 std 0.0339 spars 32.6% s2t 496 nt-acc 0.210
+  bitnet158     loss 5.3101+/-0.0364 std 0.0415 spars 32.8% s2t 536 nt-acc 0.207
+  sparse_sched  loss 5.3408+/-0.0393 std 0.0448 spars 49.2% s2t 620 nt-acc 0.209
+  gamma_offset  loss 5.3556+/-0.0522 std 0.0595 spars 26.8% s2t 588 nt-acc 0.203
+  tai           loss 5.3762+/-0.0259 std 0.0295 spars 31.5% s2t 624 nt-acc 0.203
+  tai_warmup    loss 5.1673+/-0.0186 std 0.0212 spars 32.1% s2t 428 nt-acc 0.217
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0033 nats  [10% of -0.0333-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0661 bootCI[-0.1172,-0.0155] (sign resolved) | t-p 0.0922 | wilcoxon(support) nan | d -1.83
+    [exploratory] tai vs data-min lsuv: dLoss -0.1123 bootCI[-0.1559,-0.0710]
+  H1 tai vs bitnet158: dSteps -88 | t-p 0.1248 | d -1.64
+  H4 tai: Levene p 0.6145 (std 0.0295 vs 0.0415)
+  downstream tai: nt-acc 0.203 vs 0.207 (t-p 0.1775)
+  lm-eval ARC-Easy(acc) tai: 0.256 vs 0.243 | dAcc +0.012 bootCI[+0.003,+0.017] | t-p 0.1107
+  lm-eval ARC-Easy(acc_norm) tai: 0.221 vs 0.220 | dAcc +0.001 bootCI[-0.017,+0.030] | t-p 0.9462
+  lm-eval HellaSwag(acc) tai: 0.246 vs 0.257 | dAcc -0.011 bootCI[-0.033,+0.007] | t-p 0.4444
+  lm-eval HellaSwag(acc_norm) tai: 0.286 vs 0.283 | dAcc +0.002 bootCI[-0.007,+0.010] | t-p 0.6914
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1428 bootCI[+0.1007,+0.1912] (sign resolved) | t-p 0.0051 | wilcoxon(support) nan | d +4.33
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0966 bootCI[+0.0730,+0.1340]
+  H1 tai_warmup vs bitnet158: dSteps +108 | t-p 0.0138 | d +3.42
+  H4 tai_warmup: Levene p 0.2852 (std 0.0212 vs 0.0415)
+  downstream tai_warmup: nt-acc 0.217 vs 0.207 (t-p 0.0042)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.250 vs 0.243 | dAcc +0.007 bootCI[+0.000,+0.017] | t-p 0.3206
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.228 vs 0.220 | dAcc +0.008 bootCI[+0.003,+0.010] | t-p 0.0728
+  lm-eval HellaSwag(acc) tai_warmup: 0.254 vs 0.257 | dAcc -0.002 bootCI[-0.017,+0.013] | t-p 0.8218
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.299 vs 0.283 | dAcc +0.016 bootCI[-0.007,+0.033] | t-p 0.3169
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim192:tai_warmup': 'reject', 'dim192:tai': 'retain'}
+  FP16 gap: bitnet158 is -0.0333 above FP16
+  [confirmatory scale]
+
+===== dim256 =====
+  fp16_control  loss 5.2929+/-0.0235 std 0.0465 spars 0.0% s2t 544 nt-acc 0.207
+  standard      loss 5.2165+/-0.0274 std 0.0542 spars 32.8% s2t 531 nt-acc 0.214
+  lsuv          loss 5.1745+/-0.0187 std 0.0369 spars 32.5% s2t 493 nt-acc 0.217
+  bitnet158     loss 5.2211+/-0.0266 std 0.0525 spars 32.9% s2t 531 nt-acc 0.213
+  sparse_sched  loss 5.2389+/-0.0220 std 0.0435 spars 48.7% s2t 529 nt-acc 0.213
+  gamma_offset  loss 5.2242+/-0.0203 std 0.0400 spars 26.7% s2t 527 nt-acc 0.213
+  tai           loss 5.2802+/-0.0120 std 0.0237 spars 31.9% s2t 593 nt-acc 0.210
+  tai_warmup    loss 5.0882+/-0.0196 std 0.0387 spars 32.1% s2t 429 nt-acc 0.224
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0072 nats  [10% of -0.0718-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0591 bootCI[-0.0856,-0.0329] (sign resolved) | t-p 0.0008 | wilcoxon(support) 0.0009 | d -1.45
+    [exploratory] tai vs data-min lsuv: dLoss -0.1057 bootCI[-0.1232,-0.0890]
+  H1 tai vs bitnet158: dSteps -63 | t-p 0.0003 | d -1.52
+  H4 tai: Levene p 0.0360 (std 0.0237 vs 0.0525)
+  downstream tai: nt-acc 0.210 vs 0.213 (t-p 0.0072)
+  lm-eval ARC-Easy(acc) tai: 0.256 vs 0.261 | dAcc -0.006 bootCI[-0.020,+0.010] | t-p 0.5876
+  lm-eval ARC-Easy(acc_norm) tai: 0.223 vs 0.224 | dAcc -0.001 bootCI[-0.013,+0.013] | t-p 0.8995
+  lm-eval HellaSwag(acc) tai: 0.256 vs 0.247 | dAcc +0.009 bootCI[+0.000,+0.020] | t-p 0.2697
+  lm-eval HellaSwag(acc_norm) tai: 0.284 vs 0.293 | dAcc -0.009 bootCI[-0.017,+0.000] | t-p 0.2079
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1329 bootCI[+0.1018,+0.1644] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +2.88
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0863 bootCI[+0.0566,+0.1151]
+  H1 tai_warmup vs bitnet158: dSteps +101 | t-p 0.0000 | d +2.45
+  H4 tai_warmup: Levene p 0.4467 (std 0.0387 vs 0.0525)
+  downstream tai_warmup: nt-acc 0.224 vs 0.213 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.269 vs 0.261 | dAcc +0.008 bootCI[+0.000,+0.017] | t-p 0.2495
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.227 vs 0.224 | dAcc +0.002 bootCI[-0.023,+0.023] | t-p 0.8857
+  lm-eval HellaSwag(acc) tai_warmup: 0.244 vs 0.247 | dAcc -0.002 bootCI[-0.013,+0.010] | t-p 0.7735
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.284 vs 0.293 | dAcc -0.009 bootCI[-0.013,-0.003] | t-p 0.0942
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim256:tai_warmup': 'reject', 'dim256:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.0718 above FP16
+  [EXPLORATORY scale]
+
+===== dim320 =====
+  fp16_control  loss 5.1365+/-0.0416 std 0.0475 spars 0.0% s2t 496 nt-acc 0.219
+  standard      loss 5.1834+/-0.0233 std 0.0266 spars 32.0% s2t 580 nt-acc 0.221
+  lsuv          loss 5.1509+/-0.0261 std 0.0298 spars 32.0% s2t 548 nt-acc 0.224
+  bitnet158     loss 5.1812+/-0.0178 std 0.0203 spars 32.1% s2t 580 nt-acc 0.221
+  sparse_sched  loss 5.1921+/-0.0121 std 0.0138 spars 48.6% s2t 592 nt-acc 0.220
+  gamma_offset  loss 5.1827+/-0.0193 std 0.0220 spars 26.8% s2t 600 nt-acc 0.220
+  tai           loss 5.2812+/-0.0187 std 0.0214 spars 32.1% s2t 680 nt-acc 0.213
+  tai_warmup    loss 5.0555+/-0.0233 std 0.0266 spars 29.9% s2t 488 nt-acc 0.232
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0045 nats  [10% of +0.0447-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1000 bootCI[-0.1238,-0.0762] (sign resolved) | t-p 0.0021 | wilcoxon(support) nan | d -4.79
+    [exploratory] tai vs data-min lsuv: dLoss -0.1303 bootCI[-0.1507,-0.1121]
+  H1 tai vs bitnet158: dSteps -100 | t-p 0.0014 | d -3.54
+  H4 tai: Levene p 0.9963 (std 0.0214 vs 0.0203)
+  downstream tai: nt-acc 0.213 vs 0.221 (t-p 0.0019)
+  lm-eval ARC-Easy(acc) tai: 0.249 vs 0.264 | dAcc -0.016 bootCI[-0.027,-0.003] | t-p 0.1480
+  lm-eval ARC-Easy(acc_norm) tai: 0.221 vs 0.234 | dAcc -0.013 bootCI[-0.033,+0.013] | t-p 0.4380
+  lm-eval HellaSwag(acc) tai: 0.244 vs 0.257 | dAcc -0.012 bootCI[-0.027,+0.003] | t-p 0.2943
+  lm-eval HellaSwag(acc_norm) tai: 0.290 vs 0.298 | dAcc -0.008 bootCI[-0.013,-0.003] | t-p 0.1181
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1257 bootCI[+0.1114,+0.1400] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d +5.31
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0955 bootCI[+0.0740,+0.1275]
+  H1 tai_warmup vs bitnet158: dSteps +92 | t-p 0.0077 | d +3.14
+  H4 tai_warmup: Levene p 0.7071 (std 0.0266 vs 0.0203)
+  downstream tai_warmup: nt-acc 0.232 vs 0.221 (t-p 0.0001)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.270 vs 0.264 | dAcc +0.006 bootCI[-0.010,+0.023] | t-p 0.6242
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.234 vs 0.234 | dAcc +0.000 bootCI[-0.010,+0.017] | t-p 1.0000
+  lm-eval HellaSwag(acc) tai_warmup: 0.252 vs 0.257 | dAcc -0.004 bootCI[-0.013,+0.000] | t-p 0.4226
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.297 vs 0.298 | dAcc -0.001 bootCI[-0.007,+0.010] | t-p 0.8600
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim320:tai_warmup': 'reject', 'dim320:tai': 'reject'}
+  FP16 gap: bitnet158 is +0.0447 above FP16
+  [PRIMARY scale]
+
+===== dim384 =====
+  fp16_control  loss 5.1785+/-0.0226 std 0.0447 spars 0.0% s2t 564 nt-acc 0.216
+  standard      loss 5.1094+/-0.0155 std 0.0307 spars 32.1% s2t 552 nt-acc 0.227
+  lsuv          loss 5.0752+/-0.0169 std 0.0334 spars 31.8% s2t 524 nt-acc 0.230
+  bitnet158     loss 5.1114+/-0.0147 std 0.0291 spars 32.1% s2t 555 nt-acc 0.227
+  sparse_sched  loss 5.1440+/-0.0187 std 0.0370 spars 48.8% s2t 564 nt-acc 0.224
+  gamma_offset  loss 5.1365+/-0.0131 std 0.0258 spars 26.0% s2t 560 nt-acc 0.224
+  tai           loss 5.1914+/-0.0137 std 0.0271 spars 30.0% s2t 613 nt-acc 0.221
+  tai_warmup    loss 4.9437+/-0.0137 std 0.0272 spars 30.3% s2t 448 nt-acc 0.242
+  tai_star      loss 5.1919+/-0.0123 std 0.0244 spars 28.4% s2t 589 nt-acc 0.218
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0067 nats  [10% of -0.0671-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0800 bootCI[-0.0986,-0.0595] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -2.84
+    [exploratory] tai vs data-min lsuv: dLoss -0.1161 bootCI[-0.1337,-0.0976]
+  H1 tai vs bitnet158: dSteps -59 | t-p 0.0001 | d -2.11
+  H4 tai: Levene p 0.6482 (std 0.0271 vs 0.0291)
+  downstream tai: nt-acc 0.221 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.277 vs 0.262 | dAcc +0.014 bootCI[+0.000,+0.043] | t-p 0.4226
+  lm-eval ARC-Easy(acc_norm) tai: 0.228 vs 0.233 | dAcc -0.006 bootCI[-0.043,+0.017] | t-p 0.7974
+  lm-eval HellaSwag(acc) tai: 0.251 vs 0.252 | dAcc -0.001 bootCI[-0.020,+0.013] | t-p 0.9207
+  lm-eval HellaSwag(acc_norm) tai: 0.289 vs 0.297 | dAcc -0.008 bootCI[-0.023,+0.007] | t-p 0.4647
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1677 bootCI[+0.1463,+0.1900] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +5.95
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1315 bootCI[+0.1149,+0.1463]
+  H1 tai_warmup vs bitnet158: dSteps +107 | t-p 0.0000 | d +4.23
+  H4 tai_warmup: Levene p 0.8885 (std 0.0272 vs 0.0291)
+  downstream tai_warmup: nt-acc 0.242 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.279 vs 0.262 | dAcc +0.017 bootCI[+0.003,+0.027] | t-p 0.1383
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.229 vs 0.233 | dAcc -0.004 bootCI[-0.017,+0.013] | t-p 0.6734
+  lm-eval HellaSwag(acc) tai_warmup: 0.250 vs 0.252 | dAcc -0.002 bootCI[-0.010,+0.010] | t-p 0.7538
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.306 vs 0.297 | dAcc +0.009 bootCI[-0.010,+0.027] | t-p 0.4899
+  H2-TOST tai_star vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_star vs bitnet158: dLoss -0.0805 bootCI[-0.1017,-0.0566] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -3.00
+    [exploratory] tai_star vs data-min lsuv: dLoss -0.1166 bootCI[-0.1358,-0.0953]
+  H1 tai_star vs bitnet158: dSteps -35 | t-p 0.0125 | d -1.24
+  H4 tai_star: Levene p 0.5322 (std 0.0244 vs 0.0291)
+  downstream tai_star: nt-acc 0.218 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_star: 0.252 vs 0.262 | dAcc -0.010 bootCI[-0.037,+0.017] | t-p 0.5826
+  lm-eval ARC-Easy(acc_norm) tai_star: 0.210 vs 0.233 | dAcc -0.023 bootCI[-0.063,-0.003] | t-p 0.3636
+  lm-eval HellaSwag(acc) tai_star: 0.237 vs 0.252 | dAcc -0.016 bootCI[-0.033,+0.003] | t-p 0.2799
+  lm-eval HellaSwag(acc_norm) tai_star: 0.289 vs 0.297 | dAcc -0.008 bootCI[-0.030,+0.017] | t-p 0.6231
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim384:tai_warmup': 'reject', 'dim384:tai': 'reject', 'dim384:tai_star': 'reject'}
+  FP16 gap: bitnet158 is -0.0671 above FP16
+  [confirmatory scale]
+
+===== dim512 =====
+  fp16_control  loss 5.1143+/-0.0168 std 0.0333 spars 0.0% s2t 560 nt-acc 0.226
+  standard      loss 5.0113+/-0.0128 std 0.0253 spars 32.3% s2t 521 nt-acc 0.229
+  lsuv          loss 4.9604+/-0.0117 std 0.0231 spars 31.8% s2t 491 nt-acc 0.233
+  bitnet158     loss 5.0614+/-0.0097 std 0.0192 spars 32.3% s2t 567 nt-acc 0.230
+  sparse_sched  loss 5.0805+/-0.0104 std 0.0206 spars 48.2% s2t 545 nt-acc 0.230
+  gamma_offset  loss 4.9981+/-0.0142 std 0.0280 spars 26.2% s2t 515 nt-acc 0.230
+  tai           loss 5.1451+/-0.0136 std 0.0268 spars 30.8% s2t 637 nt-acc 0.219
+  tai_warmup    loss 4.8600+/-0.0083 std 0.0164 spars 28.5% s2t 419 nt-acc 0.243
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0053 nats  [10% of -0.0529-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0838 bootCI[-0.1038,-0.0637] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -3.59
+    [exploratory] tai vs data-min lsuv: dLoss -0.1848 bootCI[-0.2049,-0.1643]
+  H1 tai vs bitnet158: dSteps -71 | t-p 0.0000 | d -2.47
+  H4 tai: Levene p 0.1749 (std 0.0268 vs 0.0192)
+  downstream tai: nt-acc 0.219 vs 0.230 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.263 vs 0.280 | dAcc -0.017 bootCI[-0.037,+0.000] | t-p 0.2601
+  lm-eval ARC-Easy(acc_norm) tai: 0.227 vs 0.230 | dAcc -0.003 bootCI[-0.007,+0.003] | t-p 0.4226
+  lm-eval HellaSwag(acc) tai: 0.251 vs 0.241 | dAcc +0.010 bootCI[-0.007,+0.020] | t-p 0.3555
+  lm-eval HellaSwag(acc_norm) tai: 0.287 vs 0.294 | dAcc -0.008 bootCI[-0.010,-0.007] | t-p 0.0198
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.2014 bootCI[+0.1882,+0.2143] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +11.26
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1004 bootCI[+0.0887,+0.1113]
+  H1 tai_warmup vs bitnet158: dSteps +148 | t-p 0.0000 | d +7.95
+  H4 tai_warmup: Levene p 0.3471 (std 0.0164 vs 0.0192)
+  downstream tai_warmup: nt-acc 0.243 vs 0.230 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.267 vs 0.280 | dAcc -0.013 bootCI[-0.033,+0.013] | t-p 0.4380
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.226 vs 0.230 | dAcc -0.004 bootCI[-0.027,+0.013] | t-p 0.7418
+  lm-eval HellaSwag(acc) tai_warmup: 0.238 vs 0.241 | dAcc -0.003 bootCI[-0.007,+0.000] | t-p 0.2254
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.299 vs 0.294 | dAcc +0.004 bootCI[-0.007,+0.023] | t-p 0.6857
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim512:tai_warmup': 'reject', 'dim512:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.0529 above FP16
+  [EXPLORATORY scale]
+
+===== dim640 =====
+  fp16_control  loss 5.1869+/-0.0148 std 0.0169 spars 0.0% s2t 648 nt-acc 0.219
+  standard      loss 5.0053+/-0.0102 std 0.0116 spars 31.7% s2t 548 nt-acc 0.235
+  lsuv          loss 4.9753+/-0.0238 std 0.0272 spars 31.5% s2t 520 nt-acc 0.238
+  bitnet158     loss 5.0070+/-0.0087 std 0.0100 spars 31.7% s2t 548 nt-acc 0.235
+  sparse_sched  loss 5.0728+/-0.0143 std 0.0163 spars 48.2% s2t 584 nt-acc 0.229
+  gamma_offset  loss 4.9911+/-0.0331 std 0.0378 spars 25.5% s2t 540 nt-acc 0.235
+  tai           loss 5.0592+/-0.0091 std 0.0104 spars 29.1% s2t 596 nt-acc 0.226
+  tai_warmup    loss 4.8158+/-0.0160 std 0.0182 spars 29.1% s2t 444 nt-acc 0.245
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0180 nats  [10% of -0.1799-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0522 bootCI[-0.0660,-0.0441] (sign resolved) | t-p 0.0016 | wilcoxon(support) nan | d -5.12
+    [exploratory] tai vs data-min lsuv: dLoss -0.0839 bootCI[-0.1071,-0.0632]
+  H1 tai vs bitnet158: dSteps -48 | t-p 0.0006 | d -1.60
+  H4 tai: Levene p 0.8714 (std 0.0104 vs 0.0100)
+  downstream tai: nt-acc 0.226 vs 0.235 (t-p 0.0007)
+  lm-eval ARC-Easy(acc) tai: 0.253 vs 0.264 | dAcc -0.011 bootCI[-0.023,+0.007] | t-p 0.3463
+  lm-eval ARC-Easy(acc_norm) tai: 0.222 vs 0.227 | dAcc -0.004 bootCI[-0.013,+0.003] | t-p 0.4557
+  lm-eval HellaSwag(acc) tai: 0.249 vs 0.244 | dAcc +0.004 bootCI[-0.003,+0.017] | t-p 0.5471
+  lm-eval HellaSwag(acc_norm) tai: 0.292 vs 0.296 | dAcc -0.003 bootCI[-0.027,+0.013] | t-p 0.8075
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1911 bootCI[+0.1782,+0.2035] (sign resolved) | t-p 0.0000 | wilcoxon(support) nan | d +13.01
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1595 bootCI[+0.1396,+0.1844]
+  H1 tai_warmup vs bitnet158: dSteps +104 | t-p 0.0029 | d +4.65
+  H4 tai_warmup: Levene p 0.6330 (std 0.0182 vs 0.0100)
+  downstream tai_warmup: nt-acc 0.245 vs 0.235 (t-p 0.0001)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.271 vs 0.264 | dAcc +0.007 bootCI[-0.007,+0.020] | t-p 0.4778
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.222 vs 0.227 | dAcc -0.004 bootCI[-0.023,+0.007] | t-p 0.6857
+  lm-eval HellaSwag(acc) tai_warmup: 0.242 vs 0.244 | dAcc -0.002 bootCI[-0.010,+0.010] | t-p 0.7538
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.290 vs 0.296 | dAcc -0.006 bootCI[-0.030,+0.010] | t-p 0.6974
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim640:tai_warmup': 'reject', 'dim640:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.1799 above FP16
+  [confirmatory scale]
+
+===== dim768 =====
+  fp16_control  loss 4.9802+/-0.0074 std 0.0147 spars 0.0% s2t 488 nt-acc 0.233
+  standard      loss 4.9163+/-0.0092 std 0.0181 spars 31.8% s2t 496 nt-acc 0.236
+  lsuv          loss 4.8891+/-0.0061 std 0.0121 spars 31.5% s2t 472 nt-acc 0.238
+  bitnet158     loss 4.9167+/-0.0098 std 0.0193 spars 31.8% s2t 495 nt-acc 0.236
+  sparse_sched  loss 4.9849+/-0.0078 std 0.0154 spars 47.9% s2t 497 nt-acc 0.233
+  gamma_offset  loss 4.8860+/-0.0070 std 0.0138 spars 25.7% s2t 491 nt-acc 0.238
+  tai           loss 5.0370+/-0.0094 std 0.0185 spars 29.5% s2t 589 nt-acc 0.227
+  tai_warmup    loss 4.8230+/-0.0079 std 0.0157 spars 29.6% s2t 441 nt-acc 0.242
+  tai_star      loss 5.0382+/-0.0070 std 0.0138 spars 29.8% s2t 589 nt-acc 0.227
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0063 nats  [10% of -0.0635-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1203 bootCI[-0.1322,-0.1088] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -6.35
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1510 bootCI[-0.1627,-0.1396]
+  H1 tai vs bitnet158: dSteps -95 | t-p 0.0000 | d -4.14
+  H4 tai: Levene p 0.9568 (std 0.0185 vs 0.0193)
+  downstream tai: nt-acc 0.227 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.278 vs 0.269 | dAcc +0.009 bootCI[-0.003,+0.017] | t-p 0.2873
+  lm-eval ARC-Easy(acc_norm) tai: 0.229 vs 0.218 | dAcc +0.011 bootCI[-0.010,+0.033] | t-p 0.4685
+  lm-eval HellaSwag(acc) tai: 0.247 vs 0.244 | dAcc +0.002 bootCI[-0.013,+0.017] | t-p 0.8218
+  lm-eval HellaSwag(acc_norm) tai: 0.289 vs 0.301 | dAcc -0.012 bootCI[-0.023,+0.000] | t-p 0.2123
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0937 bootCI[+0.0836,+0.1045] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +5.32
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0630 bootCI[+0.0527,+0.0740]
+  H1 tai_warmup vs bitnet158: dSteps +53 | t-p 0.0000 | d +3.17
+  H4 tai_warmup: Levene p 0.5930 (std 0.0157 vs 0.0193)
+  downstream tai_warmup: nt-acc 0.242 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.277 vs 0.269 | dAcc +0.008 bootCI[-0.010,+0.017] | t-p 0.4738
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.242 vs 0.218 | dAcc +0.024 bootCI[+0.013,+0.040] | t-p 0.0927
+  lm-eval HellaSwag(acc) tai_warmup: 0.239 vs 0.244 | dAcc -0.006 bootCI[-0.017,+0.007] | t-p 0.4975
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.283 vs 0.301 | dAcc -0.018 bootCI[-0.030,-0.010] | t-p 0.1028
+  H2-TOST tai_star vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_star vs bitnet158: dLoss -0.1214 bootCI[-0.1309,-0.1114] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -7.23
+    [exploratory] tai_star vs data-min gamma_offset: dLoss -0.1522 bootCI[-0.1622,-0.1417]
+  H1 tai_star vs bitnet158: dSteps -95 | t-p 0.0000 | d -4.85
+  H4 tai_star: Levene p 0.4611 (std 0.0138 vs 0.0193)
+  downstream tai_star: nt-acc 0.227 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_star: 0.267 vs 0.269 | dAcc -0.002 bootCI[-0.013,+0.017] | t-p 0.8367
+  lm-eval ARC-Easy(acc_norm) tai_star: 0.233 vs 0.218 | dAcc +0.016 bootCI[-0.003,+0.037] | t-p 0.3119
+  lm-eval HellaSwag(acc) tai_star: 0.246 vs 0.244 | dAcc +0.001 bootCI[-0.007,+0.010] | t-p 0.8399
+  lm-eval HellaSwag(acc_norm) tai_star: 0.296 vs 0.301 | dAcc -0.006 bootCI[-0.023,+0.003] | t-p 0.5958
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim768:tai_star': 'reject', 'dim768:tai': 'reject', 'dim768:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0635 above FP16
+  [EXPLORATORY scale]
+
+===== dim896 =====
+  fp16_control  loss 5.0494+/-0.0054 std 0.0062 spars 0.0% s2t 480 nt-acc 0.231
+  standard      loss 4.9990+/-0.0062 std 0.0070 spars 31.9% s2t 504 nt-acc 0.233
+  lsuv          loss 4.9811+/-0.0189 std 0.0215 spars 31.5% s2t 488 nt-acc 0.235
+  bitnet158     loss 4.9965+/-0.0097 std 0.0110 spars 31.9% s2t 504 nt-acc 0.234
+  sparse_sched  loss 5.0212+/-0.0139 std 0.0158 spars 47.9% s2t 476 nt-acc 0.234
+  gamma_offset  loss 4.9591+/-0.0119 std 0.0136 spars 25.8% s2t 496 nt-acc 0.237
+  tai           loss 5.0981+/-0.0163 std 0.0186 spars 29.7% s2t 576 nt-acc 0.227
+  tai_warmup    loss 4.9219+/-0.0108 std 0.0123 spars 29.8% s2t 464 nt-acc 0.238
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0053 nats  [10% of -0.0529-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1016 bootCI[-0.1122,-0.0910] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d -6.63
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1390 bootCI[-0.1504,-0.1217]
+  H1 tai vs bitnet158: dSteps -72 | t-p 0.0061 | d -3.69
+  H4 tai: Levene p 0.3603 (std 0.0186 vs 0.0110)
+  downstream tai: nt-acc 0.227 vs 0.234 (t-p 0.0009)
+  lm-eval ARC-Easy(acc) tai: 0.260 vs 0.261 | dAcc -0.001 bootCI[-0.020,+0.017] | t-p 0.9261
+  lm-eval ARC-Easy(acc_norm) tai: 0.213 vs 0.233 | dAcc -0.020 bootCI[-0.027,-0.013] | t-p 0.0351
+  lm-eval HellaSwag(acc) tai: 0.243 vs 0.246 | dAcc -0.002 bootCI[-0.020,+0.020] | t-p 0.8675
+  lm-eval HellaSwag(acc_norm) tai: 0.301 vs 0.282 | dAcc +0.019 bootCI[-0.010,+0.047] | t-p 0.3678
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0746 bootCI[+0.0606,+0.0860] (sign resolved) | t-p 0.0006 | wilcoxon(support) nan | d +6.38
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0372 bootCI[+0.0221,+0.0528]
+  H1 tai_warmup vs bitnet158: dSteps +40 | t-p 0.0032 | d +4.47
+  H4 tai_warmup: Levene p 0.8190 (std 0.0123 vs 0.0110)
+  downstream tai_warmup: nt-acc 0.238 vs 0.234 (t-p 0.0078)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.278 vs 0.261 | dAcc +0.017 bootCI[-0.020,+0.043] | t-p 0.4720
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.220 vs 0.233 | dAcc -0.013 bootCI[-0.020,-0.010] | t-p 0.0572
+  lm-eval HellaSwag(acc) tai_warmup: 0.247 vs 0.246 | dAcc +0.001 bootCI[-0.010,+0.017] | t-p 0.9024
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.286 vs 0.282 | dAcc +0.003 bootCI[-0.003,+0.010] | t-p 0.4778
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim896:tai': 'reject', 'dim896:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0529 above FP16
+  [EXPLORATORY scale]
+
+===== dim1024 =====
+  fp16_control  loss 5.0639+/-0.0071 std 0.0081 spars 0.0% s2t 464 nt-acc 0.229
+  standard      loss 5.0288+/-0.0030 std 0.0034 spars 32.1% s2t 500 nt-acc 0.230
+  lsuv          loss 5.0216+/-0.0196 std 0.0224 spars 31.6% s2t 488 nt-acc 0.231
+  bitnet158     loss 5.0198+/-0.0104 std 0.0118 spars 32.1% s2t 496 nt-acc 0.231
+  sparse_sched  loss 4.9945+/-0.0072 std 0.0082 spars 47.8% s2t 452 nt-acc 0.235
+  gamma_offset  loss 4.9555+/-0.0156 std 0.0178 spars 25.9% s2t 484 nt-acc 0.236
+  tai           loss 5.1355+/-0.0057 std 0.0065 spars 29.9% s2t 596 nt-acc 0.224
+  tai_warmup    loss 4.9599+/-0.0187 std 0.0213 spars 30.2% s2t 464 nt-acc 0.235
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0044 nats  [10% of -0.0441-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1157 bootCI[-0.1222,-0.1092] (sign resolved) | t-p 0.0000 | wilcoxon(support) nan | d -12.12
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1800 bootCI[-0.1931,-0.1670]
+  H1 tai vs bitnet158: dSteps -100 | t-p 0.0050 | d -4.15
+  H4 tai: Levene p 0.3339 (std 0.0065 vs 0.0118)
+  downstream tai: nt-acc 0.224 vs 0.231 (t-p 0.0008)
+  lm-eval ARC-Easy(acc) tai: 0.263 vs 0.258 | dAcc +0.006 bootCI[-0.007,+0.027] | t-p 0.6525
+  lm-eval ARC-Easy(acc_norm) tai: 0.223 vs 0.229 | dAcc -0.006 bootCI[-0.027,+0.023] | t-p 0.7458
+  lm-eval HellaSwag(acc) tai: 0.244 vs 0.248 | dAcc -0.003 bootCI[-0.020,+0.013] | t-p 0.7621
+  lm-eval HellaSwag(acc_norm) tai: 0.292 vs 0.279 | dAcc +0.013 bootCI[+0.000,+0.023] | t-p 0.1946
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0599 bootCI[+0.0386,+0.0850] (sign resolved) | t-p 0.0102 | wilcoxon(support) nan | d +3.48
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss -0.0044 bootCI[-0.0299,+0.0272]
+  H1 tai_warmup vs bitnet158: dSteps +32 | t-p 0.0028 | d +2.39
+  H4 tai_warmup: Levene p 0.6213 (std 0.0213 vs 0.0118)
+  downstream tai_warmup: nt-acc 0.235 vs 0.231 (t-p 0.0560)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.280 vs 0.258 | dAcc +0.022 bootCI[-0.010,+0.060] | t-p 0.3897
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.219 vs 0.229 | dAcc -0.010 bootCI[-0.023,+0.010] | t-p 0.4296
+  lm-eval HellaSwag(acc) tai_warmup: 0.240 vs 0.248 | dAcc -0.008 bootCI[-0.020,+0.007] | t-p 0.4226
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.288 vs 0.279 | dAcc +0.009 bootCI[-0.020,+0.040] | t-p 0.6595
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1024:tai': 'reject', 'dim1024:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0441 above FP16
+  [EXPLORATORY scale]
+
+===== dim1280 =====
+  fp16_control  loss 5.1815+/-0.0065 std 0.0074 spars 0.0% s2t 648 nt-acc 0.220
+  standard      loss 4.9164+/-0.0069 std 0.0078 spars 31.2% s2t 504 nt-acc 0.241
+  lsuv          loss 4.9293+/-0.0080 std 0.0092 spars 31.2% s2t 508 nt-acc 0.241
+  bitnet158     loss 4.9171+/-0.0057 std 0.0065 spars 31.3% s2t 508 nt-acc 0.241
+  sparse_sched  loss 5.0131+/-0.0081 std 0.0093 spars 47.8% s2t 532 nt-acc 0.232
+  gamma_offset  loss 4.9032+/-0.0134 std 0.0153 spars 25.2% s2t 504 nt-acc 0.242
+  tai           loss 4.9890+/-0.0144 std 0.0165 spars 26.4% s2t 580 nt-acc 0.237
+  tai_warmup    loss 4.8161+/-0.0127 std 0.0145 spars 26.3% s2t 480 nt-acc 0.251
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0264 nats  [10% of -0.2644-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0720 bootCI[-0.0839,-0.0569] (sign resolved) | t-p 0.0008 | wilcoxon(support) nan | d -5.75
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.0858 bootCI[-0.0944,-0.0781]
+  H1 tai vs bitnet158: dSteps -72 | t-p 0.0021 | d -4.47
+  H4 tai: Levene p 0.3888 (std 0.0165 vs 0.0065)
+  downstream tai: nt-acc 0.237 vs 0.241 (t-p 0.0028)
+  lm-eval ARC-Easy(acc) tai: 0.273 vs 0.263 | dAcc +0.010 bootCI[-0.017,+0.027] | t-p 0.5352
+  lm-eval ARC-Easy(acc_norm) tai: 0.239 vs 0.226 | dAcc +0.013 bootCI[-0.010,+0.030] | t-p 0.3828
+  lm-eval HellaSwag(acc) tai: 0.236 vs 0.227 | dAcc +0.009 bootCI[-0.010,+0.030] | t-p 0.5236
+  lm-eval HellaSwag(acc_norm) tai: 0.294 vs 0.293 | dAcc +0.001 bootCI[-0.023,+0.013] | t-p 0.9358
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1010 bootCI[+0.0865,+0.1162] (sign resolved) | t-p 0.0003 | wilcoxon(support) nan | d +8.99
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0872 bootCI[+0.0799,+0.0933]
+  H1 tai_warmup vs bitnet158: dSteps +28 | t-p 0.0046 | d +3.61
+  H4 tai_warmup: Levene p 0.1634 (std 0.0145 vs 0.0065)
+  downstream tai_warmup: nt-acc 0.251 vs 0.241 (t-p 0.0014)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.258 vs 0.263 | dAcc -0.006 bootCI[-0.027,+0.020] | t-p 0.7235
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.218 vs 0.226 | dAcc -0.008 bootCI[-0.030,+0.010] | t-p 0.5763
+  lm-eval HellaSwag(acc) tai_warmup: 0.244 vs 0.227 | dAcc +0.018 bootCI[+0.013,+0.023] | t-p 0.0263
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.296 vs 0.293 | dAcc +0.002 bootCI[-0.007,+0.010] | t-p 0.6914
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1280:tai_warmup': 'reject', 'dim1280:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.2644 above FP16
+  [EXPLORATORY scale]
+
+===== dim1536 =====
+  fp16_control  loss 4.9945+/-0.0105 std 0.0120 spars 0.0% s2t 504 nt-acc 0.238
+  standard      loss 4.9443+/-0.0075 std 0.0085 spars 31.3% s2t 508 nt-acc 0.237
+  lsuv          loss 4.9484+/-0.0080 std 0.0091 spars 31.2% s2t 500 nt-acc 0.238
+  bitnet158     loss 4.9407+/-0.0104 std 0.0118 spars 31.4% s2t 508 nt-acc 0.238
+  sparse_sched  loss 5.0858+/-0.0116 std 0.0133 spars 48.0% s2t 532 nt-acc 0.226
+  gamma_offset  loss 4.8928+/-0.0086 std 0.0098 spars 25.3% s2t 500 nt-acc 0.243
+  tai           loss 4.9973+/-0.0062 std 0.0071 spars 26.8% s2t 576 nt-acc 0.236
+  tai_warmup    loss 4.8453+/-0.0099 std 0.0113 spars 27.0% s2t 472 nt-acc 0.246
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0054 nats  [10% of -0.0538-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0566 bootCI[-0.0623,-0.0508] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d -5.81
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1045 bootCI[-0.1124,-0.0982]
+  H1 tai vs bitnet158: dSteps -68 | t-p 0.0048 | d -3.40
+  H4 tai: Levene p 0.3854 (std 0.0071 vs 0.0118)
+  downstream tai: nt-acc 0.236 vs 0.238 (t-p 0.0019)
+  lm-eval ARC-Easy(acc) tai: 0.267 vs 0.276 | dAcc -0.009 bootCI[-0.013,-0.007] | t-p 0.0572
+  lm-eval ARC-Easy(acc_norm) tai: 0.238 vs 0.226 | dAcc +0.012 bootCI[-0.003,+0.027] | t-p 0.2943
+  lm-eval HellaSwag(acc) tai: 0.234 vs 0.250 | dAcc -0.016 bootCI[-0.030,-0.007] | t-p 0.1663
+  lm-eval HellaSwag(acc_norm) tai: 0.286 vs 0.291 | dAcc -0.006 bootCI[-0.020,+0.007] | t-p 0.5492
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0954 bootCI[+0.0793,+0.1095] (sign resolved) | t-p 0.0004 | wilcoxon(support) nan | d +8.27
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0475 bootCI[+0.0379,+0.0601]
+  H1 tai_warmup vs bitnet158: dSteps +36 | t-p 0.0008 | d +3.29
+  H4 tai_warmup: Levene p 0.9550 (std 0.0113 vs 0.0118)
+  downstream tai_warmup: nt-acc 0.246 vs 0.238 (t-p 0.0008)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.273 vs 0.276 | dAcc -0.002 bootCI[-0.037,+0.023] | t-p 0.9125
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.228 vs 0.226 | dAcc +0.002 bootCI[-0.017,+0.020] | t-p 0.8534
+  lm-eval HellaSwag(acc) tai_warmup: 0.237 vs 0.250 | dAcc -0.013 bootCI[-0.033,+0.000] | t-p 0.3206
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.290 vs 0.291 | dAcc -0.001 bootCI[-0.017,+0.017] | t-p 0.9192
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1536:tai': 'reject', 'dim1536:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0538 above FP16
+
+H6 (PRIMARY) sign-consistency: 11/11 scales show TAI effect>0 (binomial p=0.0010). Per scale:
+    dim192  [expl]    1.4M -> mean effect +0.1428 (TAI better)
+    dim256  [conf]    2.5M -> mean effect +0.1329 (TAI better)
+    dim320  [expl]    4.8M -> mean effect +0.1257 (TAI better)
+    dim384  [conf]    8.3M -> mean effect +0.1677 (TAI better)
+    dim512  [conf]   19.6M -> mean effect +0.2014 (TAI better)
+    dim640  [expl]   34.4M -> mean effect +0.1911 (TAI better)
+    dim768  [conf]   55.1M -> mean effect +0.0937 (TAI better)
+    dim896  [expl]   82.4M -> mean effect +0.0746 (TAI better)
+    dim1024 [expl]  117.4M -> mean effect +0.0599 (TAI better)
+    dim1280 [expl]  214.1M -> mean effect +0.1010 (TAI better)
+    dim1536 [expl]  352.3M -> mean effect +0.0954 (TAI better)
+
+H6 (SECONDARY) mixed-effects slope over 11 scales, 95 paired points:
+    statsmodels unavailable -> descriptive fallback: Singular matrix
+        1.4M params -> mean TAI effect +0.1428
+        2.5M params -> mean TAI effect +0.1329
+        4.8M params -> mean TAI effect +0.1257
+        8.3M params -> mean TAI effect +0.1677
+       19.6M params -> mean TAI effect +0.2014
+       34.4M params -> mean TAI effect +0.1911
+       55.1M params -> mean TAI effect +0.0937
+       82.4M params -> mean TAI effect +0.0746
+      117.4M params -> mean TAI effect +0.0599
+      214.1M params -> mean TAI effect +0.1010
+      352.3M params -> mean TAI effect +0.0954
+    OLS slope vs log-params (descriptive): -0.0127
+
+NOTE: n=15 per cell. We report effect sizes with bootstrap CIs and flag
+when a CI crosses zero (sign unresolved). Claims are restricted to the
+tested regime (<=50M+ non-embed params, 20M tokens, GPT-2 BPE); broader
+scale is explicitly out of scope and listed under Limitations.
+======================================================================
+(#1) SCALING-LAW ANALYSIS OF THE TAI EFFECT  (positive => TAI better)
+======================================================================
+
+[val_loss gap (nats)]
+   mean effect over scales = +0.0816
+   slope d(effect)/d(log P) = -0.0095  95% CI [-0.0158,-0.0035] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ +0.0321
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ +0.0103
+
+[steps-to-target gap]
+   mean effect over scales = +49.2632
+   slope d(effect)/d(log P) = -10.1556  95% CI [-15.4012,-5.3757] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ -3.8496
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ -27.2337
+
+[sparsity-control gap]
+   mean effect over scales = -0.1854
+   slope d(effect)/d(log P) = -0.0059  95% CI [-0.0071,-0.0045] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ -0.2161
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ -0.2296
+
+Interpretation guide for the paper:
+ * A scale-STABLE or GROWING val_loss gap is the external-validity result:
+   the advantage does not wash out across the measured 1.4M->~50M range,
+   and the fitted trend does not predict it vanishing within an order of
+   magnitude. This is OBSERVATIONAL support over the tested regime PLUS a
+   clearly-labelled extrapolation -- never a claim of billion-scale proof.
+ * Report the slope CI, not just the point, and carry the PREDICTION label
+   into every figure caption that shows the extrapolation band.
+>>> EXCEPTION (cell) — halted
+[tee] console mirrored to /content/drive/MyDrive/TAI_neuro/logs/console_20260821.log
+RUN_CFG: {
+  "session_budget_hours": null,
+  "token_budget": 20000000,
+  "batch_size": 32,
+  "seq_len": 512,
+  "warmup_steps": 120,
+  "peak_lr": 0.002,
+  "min_lr": 0.0001,
+  "weight_decay": 0.1,
+  "grad_clip": 1.0,
+  "plateau_tol": 0.01,
+  "plateau_frac": 0.4,
+  "plateau_min_tail": 5,
+  "eval_every_frac": 0.08,
+  "eval_batches_trace": 12,
+  "budget_check": true,
+  "budget_check_mult": 2.0,
+  "budget_check_seeds": [
+    1337,
+    2026,
+    7
+  ],
+  "seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718,
+    9001,
+    13,
+    271,
+    99,
+    555,
+    8,
+    31415,
+    777,
+    2024,
+    11
+  ],
+  "rho0_grid": [
+    0.4,
+    0.5,
+    0.6,
+    0.7,
+    0.8,
+    0.9
+  ],
+  "calib_seeds": [
+    100001,
+    100002,
+    100003
+  ],
+  "per_method_lr": true,
+  "wallclock_equal_h1": false,
+  "causal_intervention": true,
+  "plateau_tol_grid": [
+    0.005,
+    0.01,
+    0.02
+  ],
+  "plateau_frac_grid": [
+    0.1,
+    0.15,
+    0.25
+  ],
+  "lmeval_n": 300,
+  "lmeval_batch": 16,
+  "lmeval_max_seeds": 3,
+  "lr_cal_steps": 300,
+  "divergence_factor": 1.25,
+  "preflight_bench_compile": true,
+  "ARM_FULL_RUN": true,
+  "preflight_only": false,
+  "bonferroni_alpha": 0.0125,
+  "tost_margin": 0.02,
+  "tost_margin_frac": 0.1,
+  "primary_baseline": "bitnet158",
+  "secondary_baselines": [
+    "standard",
+    "lsuv",
+    "sparse_sched",
+    "gamma_offset"
+  ],
+  "sweep_arms_note": "rho0 sweep runs tai + gamma_offset (see Cell 12)",
+  "confirmatory_scale": "dim384",
+  "primary_family": [
+    "H1",
+    "H2",
+    "H3",
+    "H4"
+  ],
+  "warmup_start_grid": [
+    0.3,
+    0.4,
+    0.5
+  ],
+  "warmup_tau_grid": [
+    120,
+    240,
+    480
+  ],
+  "lr_grid": [
+    0.0005,
+    0.001,
+    0.002,
+    0.003,
+    0.005
+  ],
+  "lr_grid_adaptive": true,
+  "lr_grid_max_extend": 2,
+  "compile_min_steps": 600,
+  "lr_proxy_check_scale": "dim384",
+  "lr_proxy_check_seed": 100001,
+  "ablation_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "confirmatory_scales": [
+    "dim256",
+    "dim384",
+    "dim512",
+    "dim768"
+  ],
+  "exploratory_scales": [
+    "dim192",
+    "dim320",
+    "dim640",
+    "dim896",
+    "dim1024",
+    "dim1280",
+    "dim1536"
+  ],
+  "scaling_optin_scales": [
+    "dim2048"
+  ],
+  "scaling_budget_mode": "token_equal",
+  "exploratory_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "val_folds": 5,
+  "val_chunk_tokens": 50000,
+  "holdout_frac": 0.06,
+  "width_ctrl_layers": 6,
+  "width_ctrl_scales": [
+    "wc384",
+    "wc512",
+    "wc768",
+    "wc1024"
+  ],
+  "width_ctrl_seeds": [
+    1337,
+    2026,
+    7,
+    42,
+    2718
+  ],
+  "h3_negative_control": true,
+  "rho0_sweep_seeds_full": true,
+  "fp16_init_ablation": true,
+  "equiv_margin": 0.05
+}
+Run-All safety helpers ready (_require / _exists).
+
+========================================================================
+RUN MODE: FULL EXPERIMENT (multi-session grid; checkpoint + resume to Drive)
+========================================================================
+THIS Run All will: Runs the full token-equal grid + sweeps + ablations; finished runs are skipped; exits at the session time budget.
+NEXT STEP: Re-run each session until the manifest reports complete. Idempotent: finished runs are never recomputed.
+session_budget_hours=None | ARM_FULL_RUN=True | preflight_only=False
+========================================================================
+Email: ENABLED
+>>> RUN STARTED
+Quant self-test OK (absmean + bitnet-b1.58): [-1.0, 0.0, 1.0]
+BitLinear ready (FP16 + BitNet-b1.58 switch + gamma-warmup hook).
+dim192: dim 192 layers 4 (~1.4M non-embed)
+dim256: dim 256 layers 4 (~2.5M non-embed)
+dim320: dim 320 layers 5 (~4.8M non-embed)
+dim384: dim 384 layers 6 (~8.3M non-embed)
+dim512: dim 512 layers 8 (~19.6M non-embed)
+dim640: dim 640 layers 9 (~34.4M non-embed)
+dim768: dim 768 layers 10 (~55.1M non-embed)
+dim896: dim 896 layers 11 (~82.4M non-embed)
+dim1024: dim 1024 layers 12 (~117.4M non-embed)
+dim1280: dim 1280 layers 14 (~214.1M non-embed)
+dim1536: dim 1536 layers 16 (~352.3M non-embed)
+dim2048: dim 2048 layers 20 (~782.9M non-embed)
+Cfg schema + geometry guards PASSED for 28 configs.
+(R6) gamma_offset calibration OK: rho0=0.69 -> c=0.9998 (locked baseline recovers c=1)
+TAI rho0=0.5 -> init active 0.500
+TAI rho0=0.9 -> init active 0.900
+>>> DATA CACHE HIT
+Split (R15): 58 interleaved held-out chunks of 50,000 tok (stride 16), guard=512 tok/side
+  TRAIN=45,041,120 tok | held-out total=2,900,000 tok (6.0%) | 5 sub-folds | primary VAL=600,000 tok
+  every sub-fold is disjoint from the SINGLE shared TRAIN -> R5's per-fold scores are genuinely held out
+Corpus: FineWeb-EDU (GPT-2 BPE) | 48000000 tokens | vocab 50257
+SIZES vocab rebound to 50257 -> {'dim192': 50257, 'dim256': 50257, 'dim320': 50257, 'dim384': 50257, 'dim512': 50257, 'dim640': 50257, 'dim768': 50257, 'dim896': 50257, 'dim1024': 50257, 'dim1280': 50257, 'dim1536': 50257, 'dim2048': 50257}
+Run-store ready. Existing runs: 2836
+lm-eval downstream: ENABLED (arc_easy+hellaswag, loglik mode)
+[grid] confirmatory=['dim256', 'dim384', 'dim512', 'dim768'] (x15 seeds) | exploratory=['dim192', 'dim320', 'dim640', 'dim896', 'dim1024', 'dim1280', 'dim1536'] (x5 seeds)
+  steady-state dim192      64.9 ms/step | peak   8.4 GB | loss 10.15
+  steady-state dim512      93.4 ms/step | peak  10.1 GB | loss 8.94
+  steady-state dim1024    172.4 ms/step | peak  15.8 GB | loss 7.93
+  cost model: sec/step = 0.0598 + 1.078e-10 * FLOPs/token   (fixed overhead is 92% of the smallest scale)
+
+--- kernel profile (smallest scale, 8 steps) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                     aten::_log_softmax         0.10%       7.797ms         0.17%      13.553ms      19.699us        1.631s        28.92%        1.631s       2.371ms           688  
+void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.631s        28.92%        1.631s       2.371ms           688  
+                                               aten::mm         6.32%     492.331ms         7.13%     555.477ms     111.095us        1.291s        22.89%        1.291s     258.218us          5000  
+void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.093s        19.38%        1.093s       5.939ms           184  
+                                            aten::copy_         1.72%     134.303ms         4.09%     318.987ms      20.803us     971.792ms        17.23%     976.130ms      63.658us         15334  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     821.652ms        14.57%     821.652ms     153.695us          5346  
+                                              aten::mul         3.90%     303.862ms         6.50%     506.348ms      19.643us     334.314ms         5.93%     334.455ms      12.974us         25778  
+                                              aten::add         1.74%     135.886ms         2.88%     224.425ms      17.931us     180.843ms         3.21%     180.965ms      14.459us         12516  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.247ms         3.13%     176.247ms      23.947us          7360  
+                                              aten::sub         1.54%     120.310ms         2.91%     227.112ms      22.041us     159.796ms         2.83%     160.080ms      15.536us         10304  
+                                              aten::div         1.45%     112.810ms         2.33%     181.735ms      19.986us     145.492ms         2.58%     145.596ms      16.012us          9093  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.552ms         2.47%     139.552ms      10.261us         13600  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.793s
+Self CUDA time total: 5.640s
+
+
+compile A/B: 1.30x speedup | val_loss delta 0.01283
+  -> RECOMMEND FAST_CFG['compile']=True
+
+====================================================================
+PREFLIGHT REPORT
+====================================================================
+{
+  "tokenizer": "gpt2-bpe",
+  "vocab": 50257,
+  "corpus_source": "FineWeb-EDU (GPT-2 BPE)",
+  "used_synthetic": false,
+  "lmeval_available": true,
+  "plateau_token_budget": 20000000,
+  "steps_per_run": 1221,
+  "lmeval_tasks": {
+    "arc_easy": 300,
+    "hellaswag": 300
+  },
+  "init_loss_check": 10.155,
+  "sec_per_step_raw_smoke": 0.4399,
+  "steady_state_sec_per_step": {
+    "dim192": 0.0649,
+    "dim512": 0.0934,
+    "dim1024": 0.1724
+  },
+  "cost_model": {
+    "fixed_overhead_sec": 0.0598,
+    "sec_per_flop_per_token": 1.0776207951150691e-10,
+    "probed_scales": [
+      "dim192",
+      "dim512",
+      "dim1024"
+    ]
+  },
+  "profile_top": [
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ",
+    "                                     aten::_log_softmax         0.10%       7.797ms         0.17%      13.553ms      19.699us        1.631s        28.92%        1.631s       2.371ms           688  ",
+    "void at::native::(anonymous namespace)::cunn_SoftMax...         0.00%       0.000us         0.00%       0.000us       0.000us        1.631s        28.92%        1.631s       2.371ms           688  ",
+    "                                               aten::mm         6.32%     492.331ms         7.13%     555.477ms     111.095us        1.291s        22.89%        1.291s     258.218us          5000  ",
+    "void cutlass::Kernel2<cutlass_75_tensorop_bf16_s1688...         0.00%       0.000us         0.00%       0.000us       0.000us        1.093s        19.38%        1.093s       5.939ms           184  ",
+    "                                            aten::copy_         1.72%     134.303ms         4.09%     318.987ms      20.803us     971.792ms        17.23%     976.130ms      63.658us         15334  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     821.652ms        14.57%     821.652ms     153.695us          5346  ",
+    "                                              aten::mul         3.90%     303.862ms         6.50%     506.348ms      19.643us     334.314ms         5.93%     334.455ms      12.974us         25778  ",
+    "                                              aten::add         1.74%     135.886ms         2.88%     224.425ms      17.931us     180.843ms         3.21%     180.965ms      14.459us         12516  ",
+    "void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     176.247ms         3.13%     176.247ms      23.947us          7360  ",
+    "                                              aten::sub         1.54%     120.310ms         2.91%     227.112ms      22.041us     159.796ms         2.83%     160.080ms      15.536us         10304  ",
+    "                                              aten::div         1.45%     112.810ms         2.33%     181.735ms      19.986us     145.492ms         2.58%     145.596ms      16.012us          9093  ",
+    "void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     139.552ms         2.47%     139.552ms      10.261us         13600  ",
+    "-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  "
+  ],
+  "compile_ab": {
+    "eager": {
+      "sec_per_step": 0.0841,
+      "val_loss": 10.03486
+    },
+    "compiled": {
+      "sec_per_step": 0.0649,
+      "val_loss": 10.02203
+    }
+  },
+  "compile_speedup": 1.3,
+  "compile_loss_delta": 0.01283,
+  "smoke_run": {
+    "size": "dim192",
+    "sec_for_30_steps": 13.2,
+    "val_loss": 9.935,
+    "arc": NaN,
+    "hellaswag": NaN
+  },
+  "fast_mode": {
+    "fast": true,
+    "flash_sdpa": true,
+    "tf32": true,
+    "ce_chunks": 4,
+    "pin_batches": true,
+    "compile": true
+  },
+  "projection": {
+    "sec_per_step_smallest": 0.065,
+    "scale_weight_sum": 116.4,
+    "main_runs": 760,
+    "main_run_equivalents": 5985.4,
+    "aux_run_equivalents": 569,
+    "steps_per_run": 1221,
+    "projected_hours_all": 59.18,
+    "session_budget_hours": 24.0,
+    "fits_one_session": false,
+    "sessions_needed": 3
+  }
+}
+
+NOTE: ~59.18h > 24.0h/session -> ~3 sessions; resume is automatic, re-run this cell each session until complete.
+>>> PREFLIGHT DONE
+>>> PHASE START: main experiment
+>>> PHASE START: per-method LR calibration
+
+[lr-proxy] short-vs-full calibration check at dim384/standard:
+   short(300 steps) LR*=0.003 | full(1221 steps) LR*=3.0e-03 | agree=True | spearman=1.000
+>>> LR proxy check
+LR* table (peak lr chosen per scale x method):
+  ('dim1024', 'bitnet158'): 0.002
+  ('dim1024', 'fp16_control'): 0.001
+  ('dim1024', 'gamma_offset'): 0.002
+  ('dim1024', 'lsuv'): 0.002
+  ('dim1024', 'sparse_sched'): 0.001
+  ('dim1024', 'standard'): 0.002
+  ('dim1024', 'tai'): 0.002
+  ('dim1024', 'tai_warmup'): 0.002
+  ('dim1280', 'bitnet158'): 0.001
+  ('dim1280', 'fp16_control'): 0.001
+  ('dim1280', 'gamma_offset'): 0.001
+  ('dim1280', 'lsuv'): 0.001
+  ('dim1280', 'sparse_sched'): 0.001
+  ('dim1280', 'standard'): 0.001
+  ('dim1280', 'tai'): 0.001
+  ('dim1280', 'tai_warmup'): 0.001
+  ('dim1536', 'bitnet158'): 0.001
+  ('dim1536', 'fp16_control'): 0.0005
+  ('dim1536', 'gamma_offset'): 0.001
+  ('dim1536', 'lsuv'): 0.001
+  ('dim1536', 'sparse_sched'): 0.001
+  ('dim1536', 'standard'): 0.001
+  ('dim1536', 'tai'): 0.001
+  ('dim1536', 'tai_warmup'): 0.001
+  ('dim192', 'bitnet158'): 0.005
+  ('dim192', 'fp16_control'): 0.005
+  ('dim192', 'gamma_offset'): 0.005
+  ('dim192', 'lsuv'): 0.005
+  ('dim192', 'sparse_sched'): 0.005
+  ('dim192', 'standard'): 0.005
+  ('dim192', 'tai'): 0.005
+  ('dim192', 'tai_warmup'): 0.005
+  ('dim256', 'bitnet158'): 0.005
+  ('dim256', 'fp16_control'): 0.005
+  ('dim256', 'gamma_offset'): 0.005
+  ('dim256', 'lsuv'): 0.005
+  ('dim256', 'sparse_sched'): 0.003
+  ('dim256', 'standard'): 0.005
+  ('dim256', 'tai'): 0.005
+  ('dim256', 'tai_warmup'): 0.005
+  ('dim320', 'bitnet158'): 0.003
+  ('dim320', 'fp16_control'): 0.003
+  ('dim320', 'gamma_offset'): 0.005
+  ('dim320', 'lsuv'): 0.003
+  ('dim320', 'sparse_sched'): 0.003
+  ('dim320', 'standard'): 0.003
+  ('dim320', 'tai'): 0.005
+  ('dim320', 'tai_warmup'): 0.003
+  ('dim384', 'bitnet158'): 0.003
+  ('dim384', 'fp16_control'): 0.003
+  ('dim384', 'gamma_offset'): 0.003
+  ('dim384', 'lsuv'): 0.003
+  ('dim384', 'sparse_sched'): 0.003
+  ('dim384', 'standard'): 0.003
+  ('dim384', 'tai'): 0.003
+  ('dim384', 'tai_warmup'): 0.003
+  ('dim512', 'bitnet158'): 0.003
+  ('dim512', 'fp16_control'): 0.002
+  ('dim512', 'gamma_offset'): 0.003
+  ('dim512', 'lsuv'): 0.003
+  ('dim512', 'sparse_sched'): 0.002
+  ('dim512', 'standard'): 0.003
+  ('dim512', 'tai'): 0.003
+  ('dim512', 'tai_warmup'): 0.002
+  ('dim640', 'bitnet158'): 0.002
+  ('dim640', 'fp16_control'): 0.002
+  ('dim640', 'gamma_offset'): 0.002
+  ('dim640', 'lsuv'): 0.002
+  ('dim640', 'sparse_sched'): 0.002
+  ('dim640', 'standard'): 0.002
+  ('dim640', 'tai'): 0.002
+  ('dim640', 'tai_warmup'): 0.002
+  ('dim768', 'bitnet158'): 0.002
+  ('dim768', 'fp16_control'): 0.001
+  ('dim768', 'gamma_offset'): 0.002
+  ('dim768', 'lsuv'): 0.002
+  ('dim768', 'sparse_sched'): 0.001
+  ('dim768', 'standard'): 0.002
+  ('dim768', 'tai'): 0.002
+  ('dim768', 'tai_warmup'): 0.002
+  ('dim896', 'bitnet158'): 0.002
+  ('dim896', 'fp16_control'): 0.001
+  ('dim896', 'gamma_offset'): 0.002
+  ('dim896', 'lsuv'): 0.002
+  ('dim896', 'sparse_sched'): 0.001
+  ('dim896', 'standard'): 0.002
+  ('dim896', 'tai'): 0.002
+  ('dim896', 'tai_warmup'): 0.002
+>>> PHASE DONE: per-method LR calibration
+STEPS/run=1221 | H1 per-scale target loss (60pct, median/calib):
+    dim192: 5.654
+    dim256: 5.615
+    dim320: 5.597
+    dim384: 5.622
+    dim512: 5.593
+    dim640: 5.558
+    dim768: 5.564
+    dim896: 5.664
+    dim1024: 5.706
+    dim1280: 5.571
+    dim1536: 5.620
+>>> BLOCK START: dim192/fp16_control
+>>> BLOCK START: dim192/standard
+>>> BLOCK START: dim192/lsuv
+>>> BLOCK START: dim192/bitnet158
+>>> BLOCK START: dim192/sparse_sched
+>>> BLOCK START: dim192/gamma_offset
+>>> BLOCK START: dim192/tai
+>>> BLOCK START: dim192/tai_warmup
+>>> BLOCK START: dim256/fp16_control
+>>> BLOCK START: dim256/standard
+>>> BLOCK START: dim256/lsuv
+>>> BLOCK START: dim256/bitnet158
+>>> BLOCK START: dim256/sparse_sched
+>>> BLOCK START: dim256/gamma_offset
+>>> BLOCK START: dim256/tai
+>>> BLOCK START: dim256/tai_warmup
+>>> BLOCK START: dim320/fp16_control
+>>> BLOCK START: dim320/standard
+>>> BLOCK START: dim320/lsuv
+>>> BLOCK START: dim320/bitnet158
+>>> BLOCK START: dim320/sparse_sched
+>>> BLOCK START: dim320/gamma_offset
+>>> BLOCK START: dim320/tai
+>>> BLOCK START: dim320/tai_warmup
+>>> BLOCK START: dim384/fp16_control
+>>> BLOCK START: dim384/standard
+>>> BLOCK START: dim384/lsuv
+>>> BLOCK START: dim384/bitnet158
+>>> BLOCK START: dim384/sparse_sched
+>>> BLOCK START: dim384/gamma_offset
+>>> BLOCK START: dim384/tai
+>>> BLOCK START: dim384/tai_warmup
+>>> BLOCK START: dim512/fp16_control
+>>> BLOCK START: dim512/standard
+>>> BLOCK START: dim512/lsuv
+>>> BLOCK START: dim512/bitnet158
+>>> BLOCK START: dim512/sparse_sched
+>>> BLOCK START: dim512/gamma_offset
+>>> BLOCK START: dim512/tai
+>>> BLOCK START: dim512/tai_warmup
+>>> BLOCK START: dim640/fp16_control
+>>> BLOCK START: dim640/standard
+>>> BLOCK START: dim640/lsuv
+>>> BLOCK START: dim640/bitnet158
+>>> BLOCK START: dim640/sparse_sched
+>>> BLOCK START: dim640/gamma_offset
+>>> BLOCK START: dim640/tai
+>>> BLOCK START: dim640/tai_warmup
+>>> BLOCK START: dim768/fp16_control
+>>> BLOCK START: dim768/standard
+>>> BLOCK START: dim768/lsuv
+>>> BLOCK START: dim768/bitnet158
+>>> BLOCK START: dim768/sparse_sched
+>>> BLOCK START: dim768/gamma_offset
+>>> BLOCK START: dim768/tai
+>>> BLOCK START: dim768/tai_warmup
+>>> BLOCK START: dim896/fp16_control
+>>> BLOCK START: dim896/standard
+>>> BLOCK START: dim896/lsuv
+>>> BLOCK START: dim896/bitnet158
+>>> BLOCK START: dim896/sparse_sched
+>>> BLOCK START: dim896/gamma_offset
+>>> BLOCK START: dim896/tai
+>>> BLOCK START: dim896/tai_warmup
+>>> BLOCK START: dim1024/fp16_control
+>>> BLOCK START: dim1024/standard
+>>> BLOCK START: dim1024/lsuv
+>>> BLOCK START: dim1024/bitnet158
+>>> BLOCK START: dim1024/sparse_sched
+>>> BLOCK START: dim1024/gamma_offset
+>>> BLOCK START: dim1024/tai
+>>> BLOCK START: dim1024/tai_warmup
+>>> BLOCK START: dim1280/fp16_control
+>>> BLOCK START: dim1280/standard
+>>> BLOCK START: dim1280/lsuv
+>>> BLOCK START: dim1280/bitnet158
+>>> BLOCK START: dim1280/sparse_sched
+>>> BLOCK START: dim1280/gamma_offset
+>>> BLOCK START: dim1280/tai
+>>> BLOCK START: dim1280/tai_warmup
+>>> BLOCK START: dim1536/fp16_control
+>>> BLOCK START: dim1536/standard
+>>> BLOCK START: dim1536/lsuv
+>>> BLOCK START: dim1536/bitnet158
+>>> BLOCK START: dim1536/sparse_sched
+>>> BLOCK START: dim1536/gamma_offset
+>>> BLOCK START: dim1536/tai
+>>> BLOCK START: dim1536/tai_warmup
+Main experiment complete: 760 runs (0 plateau-verified).
+>>> PHASE DONE: main experiment
+>>> PHASE START: budget sufficiency (2x tokens)
+==========================================================================
+(R3) BUDGET SUFFICIENCY at dim384: val_loss(1221 steps) - val_loss(2442 steps)
+     positive = the model was STILL IMPROVING past the 20M-token budget
+     H2 equivalence margin = 0.0200 nats
+==========================================================================
+  bitnet158       : +0.3153 nats (n=3, sd=0.0086)  -> EXCEEDS MARGIN
+  tai_warmup      : +0.2865 nats (n=3, sd=0.0010)  -> EXCEEDS MARGIN
+
+  VERDICT: at least one arm improved by MORE than the margin when given 2x
+           tokens => 20M tokens is NOT convergence. H2 is hereby RE-STATED as
+           'quality at a fixed 20M-token budget' (a token-equal claim, still
+           valid and still falsifiable), and every downstream mention of
+           'at convergence' must be read in that weaker sense. Recorded in
+           the manifest as h2_wording_supported=false.
+>>> PHASE DONE: budget sufficiency
+>>> PHASE START: rho0 sweep
+  [retention] dim384/tai: final = 0.2893 + 0.0522*initial (R2=0.931) -> 5.2% of the intervention survives; attractor at 0.3052
+  [retention] dim384/gamma_offset: final = 0.0092 + 1.0031*initial (R2=1.000) -> 100.3% of the intervention survives; attractor at -2.9402
+  [retention] dim768/tai: final = 0.2790 + 0.0691*initial (R2=0.959) -> 6.9% of the intervention survives; attractor at 0.2997
+  [retention] dim768/gamma_offset: final = 0.0053 + 1.0060*initial (R2=1.000) -> 100.6% of the intervention survives; attractor at -0.8916
+H3 (does the initial operating point persist?):
+    pooled Spearman(rho0,final_sparsity)=-0.983 (p=4.296e-66)   [expected NEGATIVE: higher rho0 = fewer zeros]
+    per-seed mean Spearman=-0.996 95% CI [-1.000,-0.989] (n_seeds=15)
+    fraction of seeds monotone DECREASING in rho0 = 0.93
+    RETENTION = 0.053  (2.65 pt of final spread from 50 pt of initial swing)
+    mean final sparsity across all rho0 = 0.3075   [the `standard` arm lands near 0.313 unaided]
+    -> H3 AS PRE-REGISTERED IS NOT SUPPORTED IN ITS STRONG FORM. The ordering is perfectly reproducible, but only 5% of the intervention survives;
+       final sparsity is dominated by an attractor near 0.308, not by rho0. Report as a bounded residual effect.
+    [negative control] across-rho0 sparsity range (signal) = 0.0265 vs within-rho0 across-seed SD (placebo) = 0.0006  -> signal/noise = 44.9x
+    (SNR >> 1 => sparsity is driven by the rho0 intervention, not init-RNG nuisance.)
+H3 STRONG FALSIFICATION (label-shuffled placebo init):
+    placebo mean per-seed Spearman = +0.135 (expected ~0)
+    real > placebo in 0/15 seeds (sign-test p=6.104e-05)
+H3 (#B) cross-scale causal effect (per-seed Spearman rho0->sparsity):
+    dim384: mean=-0.996 sd=0.015 (n_seeds=15)
+    dim768: mean=-1.000 sd=0.000 (n_seeds=15)
+    scale-invariance test (dim384 vs dim768): Welch t=+1.00, p=0.334  (LARGE p => effect statistically indistinguishable across scale => control is scale-invariant)
+H5 Pareto frontier (rho0 -> val_loss +/- sd, sparsity +/- sd); * = non-dominated:
+  * rho0 0.40 -> loss 5.2519+/-0.0198, spars 32.4+/-0.1%
+  * rho0 0.50 -> loss 5.2171+/-0.0335, spars 31.4+/-0.0%
+  * rho0 0.60 -> loss 5.1955+/-0.0308, spars 30.7+/-0.0%
+  * rho0 0.70 -> loss 5.1875+/-0.0261, spars 30.2+/-0.0%
+  * rho0 0.80 -> loss 5.1786+/-0.0396, spars 29.9+/-0.1%
+  * rho0 0.90 -> loss 5.1555+/-0.0251, spars 29.8+/-0.1%
+H5 rho0* (min loss, sparsity>=30%): rho0=0.70 loss 5.1875 spars 30.2%
+    selection stability (bootstrap P[rho0 is optimal]): {'0.40': 0.0, '0.50': 0.002, '0.60': 0.237, '0.70': 0.758, '0.80': 0.003, '0.90': 0.0}
+
+----------------------------------------------------------------------
+(R6) MECHANISM COMPARISON at dim384 — TAI vs gamma_offset (EXPLORATORY)
+----------------------------------------------------------------------
+  gamma_offset sparsity control: per-seed mean Spearman(rho0,sparsity)=-1.000 (n_seeds=15)
+  TAI          sparsity control: per-seed mean Spearman=-0.996 (n_seeds=15)
+  => Only TAI reliably controls rho0
+
+  val_loss difference (TAI - gamma_offset), paired over 90 (rho0,seed) cells:
+    mean=+0.0610 nats  95% CI [+0.0474,+0.0742]  (paired t p=1.064e-13)
+    VERDICT: gamma_offset better -> the SIMPLER method wins. Report it; the
+             paper's recommendation becomes threshold offset, not TAI init.
+>>> PHASE DONE: rho0 sweep
+>>> PHASE START: rho0* feedback
+>>> BLOCK START: dim768/tai_star
+>>> BLOCK START: dim384/tai_star
+R2 rho0* feedback complete: tai_star (rho0=0.7) on ['dim768', 'dim384']
+>>> PHASE DONE: rho0* feedback
+>>> PHASE START: cross-architecture (decoder_v2)
+>>> BLOCK START: v2/dim256/bitnet158
+>>> BLOCK START: v2/dim256/gamma_offset
+>>> BLOCK START: v2/dim256/tai_warmup
+>>> BLOCK START: v2/dim384/bitnet158
+>>> BLOCK START: v2/dim384/gamma_offset
+>>> BLOCK START: v2/dim384/tai_warmup
+R1 cross-architecture (decoder_v2) — TAI effect direction:
+  dim256 (v2): dLoss +0.0758 | t-p 0.0002 | TAI better (n=15)
+  dim384 (v2): dLoss +0.0347 | t-p 0.0008 | TAI better (n=15)
+  dim192: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim256: v1 sign='TAI better' vs v2 sign='TAI better' -> CONSISTENT
+  dim320: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim384: v1 sign='TAI better' vs v2 sign='TAI better' -> CONSISTENT
+  dim512: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim640: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim768: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim896: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim1024: v1 sign='baseline better' vs v2 sign='NA' -> DIFFERS
+  dim1280: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+  dim1536: v1 sign='TAI better' vs v2 sign='NA' -> DIFFERS
+>>> PHASE DONE: cross-architecture
+
+EXTERNAL VALIDITY (direction): TAI better in 12/13 independent (architecture x scale) cells, binomial p=0.0034
+    cells: v2:dim256+, v2:dim384+, v1:dim192+, v1:dim256+, v1:dim320+, v1:dim384+, v1:dim512+, v1:dim640+, v1:dim768+, v1:dim896+, v1:dim1024-, v1:dim1280+, v1:dim1536+
+  [skip] no runs recorded for dim2048 -- not analysed.
+  [EXPLORATORY scale]
+
+===== dim192 =====
+  fp16_control  loss 5.3434+/-0.0434 std 0.0495 spars 0.0% s2t 524 nt-acc 0.204
+  standard      loss 5.2946+/-0.0354 std 0.0404 spars 32.9% s2t 512 nt-acc 0.208
+  lsuv          loss 5.2638+/-0.0298 std 0.0339 spars 32.6% s2t 496 nt-acc 0.210
+  bitnet158     loss 5.3101+/-0.0364 std 0.0415 spars 32.8% s2t 536 nt-acc 0.207
+  sparse_sched  loss 5.3408+/-0.0393 std 0.0448 spars 49.2% s2t 620 nt-acc 0.209
+  gamma_offset  loss 5.3556+/-0.0522 std 0.0595 spars 26.8% s2t 588 nt-acc 0.203
+  tai           loss 5.3762+/-0.0259 std 0.0295 spars 31.5% s2t 624 nt-acc 0.203
+  tai_warmup    loss 5.1673+/-0.0186 std 0.0212 spars 32.1% s2t 428 nt-acc 0.217
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0033 nats  [10% of -0.0333-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0661 bootCI[-0.1172,-0.0155] (sign resolved) | t-p 0.0922 | wilcoxon(support) nan | d -1.83
+    [exploratory] tai vs data-min lsuv: dLoss -0.1123 bootCI[-0.1559,-0.0710]
+  H1 tai vs bitnet158: dSteps -88 | t-p 0.1248 | d -1.64
+  H4 tai: Levene p 0.6145 (std 0.0295 vs 0.0415)
+  downstream tai: nt-acc 0.203 vs 0.207 (t-p 0.1775)
+  lm-eval ARC-Easy(acc) tai: 0.256 vs 0.243 | dAcc +0.012 bootCI[+0.003,+0.017] | t-p 0.1107
+  lm-eval ARC-Easy(acc_norm) tai: 0.221 vs 0.220 | dAcc +0.001 bootCI[-0.017,+0.030] | t-p 0.9462
+  lm-eval HellaSwag(acc) tai: 0.246 vs 0.257 | dAcc -0.011 bootCI[-0.033,+0.007] | t-p 0.4444
+  lm-eval HellaSwag(acc_norm) tai: 0.286 vs 0.283 | dAcc +0.002 bootCI[-0.007,+0.010] | t-p 0.6914
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1428 bootCI[+0.1007,+0.1912] (sign resolved) | t-p 0.0051 | wilcoxon(support) nan | d +4.33
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0966 bootCI[+0.0730,+0.1340]
+  H1 tai_warmup vs bitnet158: dSteps +108 | t-p 0.0138 | d +3.42
+  H4 tai_warmup: Levene p 0.2852 (std 0.0212 vs 0.0415)
+  downstream tai_warmup: nt-acc 0.217 vs 0.207 (t-p 0.0042)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.250 vs 0.243 | dAcc +0.007 bootCI[+0.000,+0.017] | t-p 0.3206
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.228 vs 0.220 | dAcc +0.008 bootCI[+0.003,+0.010] | t-p 0.0728
+  lm-eval HellaSwag(acc) tai_warmup: 0.254 vs 0.257 | dAcc -0.002 bootCI[-0.017,+0.013] | t-p 0.8218
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.299 vs 0.283 | dAcc +0.016 bootCI[-0.007,+0.033] | t-p 0.3169
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim192:tai_warmup': 'reject', 'dim192:tai': 'retain'}
+  FP16 gap: bitnet158 is -0.0333 above FP16
+  [confirmatory scale]
+
+===== dim256 =====
+  fp16_control  loss 5.2929+/-0.0235 std 0.0465 spars 0.0% s2t 544 nt-acc 0.207
+  standard      loss 5.2165+/-0.0274 std 0.0542 spars 32.8% s2t 531 nt-acc 0.214
+  lsuv          loss 5.1745+/-0.0187 std 0.0369 spars 32.5% s2t 493 nt-acc 0.217
+  bitnet158     loss 5.2211+/-0.0266 std 0.0525 spars 32.9% s2t 531 nt-acc 0.213
+  sparse_sched  loss 5.2389+/-0.0220 std 0.0435 spars 48.7% s2t 529 nt-acc 0.213
+  gamma_offset  loss 5.2242+/-0.0203 std 0.0400 spars 26.7% s2t 527 nt-acc 0.213
+  tai           loss 5.2802+/-0.0120 std 0.0237 spars 31.9% s2t 593 nt-acc 0.210
+  tai_warmup    loss 5.0882+/-0.0196 std 0.0387 spars 32.1% s2t 429 nt-acc 0.224
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0072 nats  [10% of -0.0718-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0591 bootCI[-0.0856,-0.0329] (sign resolved) | t-p 0.0008 | wilcoxon(support) 0.0009 | d -1.45
+    [exploratory] tai vs data-min lsuv: dLoss -0.1057 bootCI[-0.1232,-0.0890]
+  H1 tai vs bitnet158: dSteps -63 | t-p 0.0003 | d -1.52
+  H4 tai: Levene p 0.0360 (std 0.0237 vs 0.0525)
+  downstream tai: nt-acc 0.210 vs 0.213 (t-p 0.0072)
+  lm-eval ARC-Easy(acc) tai: 0.256 vs 0.261 | dAcc -0.006 bootCI[-0.020,+0.010] | t-p 0.5876
+  lm-eval ARC-Easy(acc_norm) tai: 0.223 vs 0.224 | dAcc -0.001 bootCI[-0.013,+0.013] | t-p 0.8995
+  lm-eval HellaSwag(acc) tai: 0.256 vs 0.247 | dAcc +0.009 bootCI[+0.000,+0.020] | t-p 0.2697
+  lm-eval HellaSwag(acc_norm) tai: 0.284 vs 0.293 | dAcc -0.009 bootCI[-0.017,+0.000] | t-p 0.2079
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1329 bootCI[+0.1018,+0.1644] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +2.88
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0863 bootCI[+0.0566,+0.1151]
+  H1 tai_warmup vs bitnet158: dSteps +101 | t-p 0.0000 | d +2.45
+  H4 tai_warmup: Levene p 0.4467 (std 0.0387 vs 0.0525)
+  downstream tai_warmup: nt-acc 0.224 vs 0.213 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.269 vs 0.261 | dAcc +0.008 bootCI[+0.000,+0.017] | t-p 0.2495
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.227 vs 0.224 | dAcc +0.002 bootCI[-0.023,+0.023] | t-p 0.8857
+  lm-eval HellaSwag(acc) tai_warmup: 0.244 vs 0.247 | dAcc -0.002 bootCI[-0.013,+0.010] | t-p 0.7735
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.284 vs 0.293 | dAcc -0.009 bootCI[-0.013,-0.003] | t-p 0.0942
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim256:tai_warmup': 'reject', 'dim256:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.0718 above FP16
+  [EXPLORATORY scale]
+
+===== dim320 =====
+  fp16_control  loss 5.1365+/-0.0416 std 0.0475 spars 0.0% s2t 496 nt-acc 0.219
+  standard      loss 5.1834+/-0.0233 std 0.0266 spars 32.0% s2t 580 nt-acc 0.221
+  lsuv          loss 5.1509+/-0.0261 std 0.0298 spars 32.0% s2t 548 nt-acc 0.224
+  bitnet158     loss 5.1812+/-0.0178 std 0.0203 spars 32.1% s2t 580 nt-acc 0.221
+  sparse_sched  loss 5.1921+/-0.0121 std 0.0138 spars 48.6% s2t 592 nt-acc 0.220
+  gamma_offset  loss 5.1827+/-0.0193 std 0.0220 spars 26.8% s2t 600 nt-acc 0.220
+  tai           loss 5.2812+/-0.0187 std 0.0214 spars 32.1% s2t 680 nt-acc 0.213
+  tai_warmup    loss 5.0555+/-0.0233 std 0.0266 spars 29.9% s2t 488 nt-acc 0.232
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0045 nats  [10% of +0.0447-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1000 bootCI[-0.1238,-0.0762] (sign resolved) | t-p 0.0021 | wilcoxon(support) nan | d -4.79
+    [exploratory] tai vs data-min lsuv: dLoss -0.1303 bootCI[-0.1507,-0.1121]
+  H1 tai vs bitnet158: dSteps -100 | t-p 0.0014 | d -3.54
+  H4 tai: Levene p 0.9963 (std 0.0214 vs 0.0203)
+  downstream tai: nt-acc 0.213 vs 0.221 (t-p 0.0019)
+  lm-eval ARC-Easy(acc) tai: 0.249 vs 0.264 | dAcc -0.016 bootCI[-0.027,-0.003] | t-p 0.1480
+  lm-eval ARC-Easy(acc_norm) tai: 0.221 vs 0.234 | dAcc -0.013 bootCI[-0.033,+0.013] | t-p 0.4380
+  lm-eval HellaSwag(acc) tai: 0.244 vs 0.257 | dAcc -0.012 bootCI[-0.027,+0.003] | t-p 0.2943
+  lm-eval HellaSwag(acc_norm) tai: 0.290 vs 0.298 | dAcc -0.008 bootCI[-0.013,-0.003] | t-p 0.1181
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1257 bootCI[+0.1114,+0.1400] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d +5.31
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.0955 bootCI[+0.0740,+0.1275]
+  H1 tai_warmup vs bitnet158: dSteps +92 | t-p 0.0077 | d +3.14
+  H4 tai_warmup: Levene p 0.7071 (std 0.0266 vs 0.0203)
+  downstream tai_warmup: nt-acc 0.232 vs 0.221 (t-p 0.0001)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.270 vs 0.264 | dAcc +0.006 bootCI[-0.010,+0.023] | t-p 0.6242
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.234 vs 0.234 | dAcc +0.000 bootCI[-0.010,+0.017] | t-p 1.0000
+  lm-eval HellaSwag(acc) tai_warmup: 0.252 vs 0.257 | dAcc -0.004 bootCI[-0.013,+0.000] | t-p 0.4226
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.297 vs 0.298 | dAcc -0.001 bootCI[-0.007,+0.010] | t-p 0.8600
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim320:tai_warmup': 'reject', 'dim320:tai': 'reject'}
+  FP16 gap: bitnet158 is +0.0447 above FP16
+  [PRIMARY scale]
+
+===== dim384 =====
+  fp16_control  loss 5.1785+/-0.0226 std 0.0447 spars 0.0% s2t 564 nt-acc 0.216
+  standard      loss 5.1094+/-0.0155 std 0.0307 spars 32.1% s2t 552 nt-acc 0.227
+  lsuv          loss 5.0752+/-0.0169 std 0.0334 spars 31.8% s2t 524 nt-acc 0.230
+  bitnet158     loss 5.1114+/-0.0147 std 0.0291 spars 32.1% s2t 555 nt-acc 0.227
+  sparse_sched  loss 5.1440+/-0.0187 std 0.0370 spars 48.8% s2t 564 nt-acc 0.224
+  gamma_offset  loss 5.1365+/-0.0131 std 0.0258 spars 26.0% s2t 560 nt-acc 0.224
+  tai           loss 5.1914+/-0.0137 std 0.0271 spars 30.0% s2t 613 nt-acc 0.221
+  tai_warmup    loss 4.9437+/-0.0137 std 0.0272 spars 30.3% s2t 448 nt-acc 0.242
+  tai_star      loss 5.1919+/-0.0123 std 0.0244 spars 28.4% s2t 589 nt-acc 0.218
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0067 nats  [10% of -0.0671-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0800 bootCI[-0.0986,-0.0595] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -2.84
+    [exploratory] tai vs data-min lsuv: dLoss -0.1161 bootCI[-0.1337,-0.0976]
+  H1 tai vs bitnet158: dSteps -59 | t-p 0.0001 | d -2.11
+  H4 tai: Levene p 0.6482 (std 0.0271 vs 0.0291)
+  downstream tai: nt-acc 0.221 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.277 vs 0.262 | dAcc +0.014 bootCI[+0.000,+0.043] | t-p 0.4226
+  lm-eval ARC-Easy(acc_norm) tai: 0.228 vs 0.233 | dAcc -0.006 bootCI[-0.043,+0.017] | t-p 0.7974
+  lm-eval HellaSwag(acc) tai: 0.251 vs 0.252 | dAcc -0.001 bootCI[-0.020,+0.013] | t-p 0.9207
+  lm-eval HellaSwag(acc_norm) tai: 0.289 vs 0.297 | dAcc -0.008 bootCI[-0.023,+0.007] | t-p 0.4647
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1677 bootCI[+0.1463,+0.1900] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +5.95
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1315 bootCI[+0.1149,+0.1463]
+  H1 tai_warmup vs bitnet158: dSteps +107 | t-p 0.0000 | d +4.23
+  H4 tai_warmup: Levene p 0.8885 (std 0.0272 vs 0.0291)
+  downstream tai_warmup: nt-acc 0.242 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.279 vs 0.262 | dAcc +0.017 bootCI[+0.003,+0.027] | t-p 0.1383
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.229 vs 0.233 | dAcc -0.004 bootCI[-0.017,+0.013] | t-p 0.6734
+  lm-eval HellaSwag(acc) tai_warmup: 0.250 vs 0.252 | dAcc -0.002 bootCI[-0.010,+0.010] | t-p 0.7538
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.306 vs 0.297 | dAcc +0.009 bootCI[-0.010,+0.027] | t-p 0.4899
+  H2-TOST tai_star vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_star vs bitnet158: dLoss -0.0805 bootCI[-0.1017,-0.0566] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -3.00
+    [exploratory] tai_star vs data-min lsuv: dLoss -0.1166 bootCI[-0.1358,-0.0953]
+  H1 tai_star vs bitnet158: dSteps -35 | t-p 0.0125 | d -1.24
+  H4 tai_star: Levene p 0.5322 (std 0.0244 vs 0.0291)
+  downstream tai_star: nt-acc 0.218 vs 0.227 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_star: 0.252 vs 0.262 | dAcc -0.010 bootCI[-0.037,+0.017] | t-p 0.5826
+  lm-eval ARC-Easy(acc_norm) tai_star: 0.210 vs 0.233 | dAcc -0.023 bootCI[-0.063,-0.003] | t-p 0.3636
+  lm-eval HellaSwag(acc) tai_star: 0.237 vs 0.252 | dAcc -0.016 bootCI[-0.033,+0.003] | t-p 0.2799
+  lm-eval HellaSwag(acc_norm) tai_star: 0.289 vs 0.297 | dAcc -0.008 bootCI[-0.030,+0.017] | t-p 0.6231
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim384:tai_warmup': 'reject', 'dim384:tai': 'reject', 'dim384:tai_star': 'reject'}
+  FP16 gap: bitnet158 is -0.0671 above FP16
+  [confirmatory scale]
+
+===== dim512 =====
+  fp16_control  loss 5.1143+/-0.0168 std 0.0333 spars 0.0% s2t 560 nt-acc 0.226
+  standard      loss 5.0113+/-0.0128 std 0.0253 spars 32.3% s2t 521 nt-acc 0.229
+  lsuv          loss 4.9604+/-0.0117 std 0.0231 spars 31.8% s2t 491 nt-acc 0.233
+  bitnet158     loss 5.0614+/-0.0097 std 0.0192 spars 32.3% s2t 567 nt-acc 0.230
+  sparse_sched  loss 5.0805+/-0.0104 std 0.0206 spars 48.2% s2t 545 nt-acc 0.230
+  gamma_offset  loss 4.9981+/-0.0142 std 0.0280 spars 26.2% s2t 515 nt-acc 0.230
+  tai           loss 5.1451+/-0.0136 std 0.0268 spars 30.8% s2t 637 nt-acc 0.219
+  tai_warmup    loss 4.8600+/-0.0083 std 0.0164 spars 28.5% s2t 419 nt-acc 0.243
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0053 nats  [10% of -0.0529-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0838 bootCI[-0.1038,-0.0637] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -3.59
+    [exploratory] tai vs data-min lsuv: dLoss -0.1848 bootCI[-0.2049,-0.1643]
+  H1 tai vs bitnet158: dSteps -71 | t-p 0.0000 | d -2.47
+  H4 tai: Levene p 0.1749 (std 0.0268 vs 0.0192)
+  downstream tai: nt-acc 0.219 vs 0.230 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.263 vs 0.280 | dAcc -0.017 bootCI[-0.037,+0.000] | t-p 0.2601
+  lm-eval ARC-Easy(acc_norm) tai: 0.227 vs 0.230 | dAcc -0.003 bootCI[-0.007,+0.003] | t-p 0.4226
+  lm-eval HellaSwag(acc) tai: 0.251 vs 0.241 | dAcc +0.010 bootCI[-0.007,+0.020] | t-p 0.3555
+  lm-eval HellaSwag(acc_norm) tai: 0.287 vs 0.294 | dAcc -0.008 bootCI[-0.010,-0.007] | t-p 0.0198
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.2014 bootCI[+0.1882,+0.2143] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +11.26
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1004 bootCI[+0.0887,+0.1113]
+  H1 tai_warmup vs bitnet158: dSteps +148 | t-p 0.0000 | d +7.95
+  H4 tai_warmup: Levene p 0.3471 (std 0.0164 vs 0.0192)
+  downstream tai_warmup: nt-acc 0.243 vs 0.230 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.267 vs 0.280 | dAcc -0.013 bootCI[-0.033,+0.013] | t-p 0.4380
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.226 vs 0.230 | dAcc -0.004 bootCI[-0.027,+0.013] | t-p 0.7418
+  lm-eval HellaSwag(acc) tai_warmup: 0.238 vs 0.241 | dAcc -0.003 bootCI[-0.007,+0.000] | t-p 0.2254
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.299 vs 0.294 | dAcc +0.004 bootCI[-0.007,+0.023] | t-p 0.6857
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim512:tai_warmup': 'reject', 'dim512:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.0529 above FP16
+  [EXPLORATORY scale]
+
+===== dim640 =====
+  fp16_control  loss 5.1869+/-0.0148 std 0.0169 spars 0.0% s2t 648 nt-acc 0.219
+  standard      loss 5.0053+/-0.0102 std 0.0116 spars 31.7% s2t 548 nt-acc 0.235
+  lsuv          loss 4.9753+/-0.0238 std 0.0272 spars 31.5% s2t 520 nt-acc 0.238
+  bitnet158     loss 5.0070+/-0.0087 std 0.0100 spars 31.7% s2t 548 nt-acc 0.235
+  sparse_sched  loss 5.0728+/-0.0143 std 0.0163 spars 48.2% s2t 584 nt-acc 0.229
+  gamma_offset  loss 4.9911+/-0.0331 std 0.0378 spars 25.5% s2t 540 nt-acc 0.235
+  tai           loss 5.0592+/-0.0091 std 0.0104 spars 29.1% s2t 596 nt-acc 0.226
+  tai_warmup    loss 4.8158+/-0.0160 std 0.0182 spars 29.1% s2t 444 nt-acc 0.245
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: lsuv
+  H2 TOST margin = 0.0180 nats  [10% of -0.1799-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0522 bootCI[-0.0660,-0.0441] (sign resolved) | t-p 0.0016 | wilcoxon(support) nan | d -5.12
+    [exploratory] tai vs data-min lsuv: dLoss -0.0839 bootCI[-0.1071,-0.0632]
+  H1 tai vs bitnet158: dSteps -48 | t-p 0.0006 | d -1.60
+  H4 tai: Levene p 0.8714 (std 0.0104 vs 0.0100)
+  downstream tai: nt-acc 0.226 vs 0.235 (t-p 0.0007)
+  lm-eval ARC-Easy(acc) tai: 0.253 vs 0.264 | dAcc -0.011 bootCI[-0.023,+0.007] | t-p 0.3463
+  lm-eval ARC-Easy(acc_norm) tai: 0.222 vs 0.227 | dAcc -0.004 bootCI[-0.013,+0.003] | t-p 0.4557
+  lm-eval HellaSwag(acc) tai: 0.249 vs 0.244 | dAcc +0.004 bootCI[-0.003,+0.017] | t-p 0.5471
+  lm-eval HellaSwag(acc_norm) tai: 0.292 vs 0.296 | dAcc -0.003 bootCI[-0.027,+0.013] | t-p 0.8075
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1911 bootCI[+0.1782,+0.2035] (sign resolved) | t-p 0.0000 | wilcoxon(support) nan | d +13.01
+    [exploratory] tai_warmup vs data-min lsuv: dLoss +0.1595 bootCI[+0.1396,+0.1844]
+  H1 tai_warmup vs bitnet158: dSteps +104 | t-p 0.0029 | d +4.65
+  H4 tai_warmup: Levene p 0.6330 (std 0.0182 vs 0.0100)
+  downstream tai_warmup: nt-acc 0.245 vs 0.235 (t-p 0.0001)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.271 vs 0.264 | dAcc +0.007 bootCI[-0.007,+0.020] | t-p 0.4778
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.222 vs 0.227 | dAcc -0.004 bootCI[-0.023,+0.007] | t-p 0.6857
+  lm-eval HellaSwag(acc) tai_warmup: 0.242 vs 0.244 | dAcc -0.002 bootCI[-0.010,+0.010] | t-p 0.7538
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.290 vs 0.296 | dAcc -0.006 bootCI[-0.030,+0.010] | t-p 0.6974
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim640:tai_warmup': 'reject', 'dim640:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.1799 above FP16
+  [confirmatory scale]
+
+===== dim768 =====
+  fp16_control  loss 4.9802+/-0.0074 std 0.0147 spars 0.0% s2t 488 nt-acc 0.233
+  standard      loss 4.9163+/-0.0092 std 0.0181 spars 31.8% s2t 496 nt-acc 0.236
+  lsuv          loss 4.8891+/-0.0061 std 0.0121 spars 31.5% s2t 472 nt-acc 0.238
+  bitnet158     loss 4.9167+/-0.0098 std 0.0193 spars 31.8% s2t 495 nt-acc 0.236
+  sparse_sched  loss 4.9849+/-0.0078 std 0.0154 spars 47.9% s2t 497 nt-acc 0.233
+  gamma_offset  loss 4.8860+/-0.0070 std 0.0138 spars 25.7% s2t 491 nt-acc 0.238
+  tai           loss 5.0370+/-0.0094 std 0.0185 spars 29.5% s2t 589 nt-acc 0.227
+  tai_warmup    loss 4.8230+/-0.0079 std 0.0157 spars 29.6% s2t 441 nt-acc 0.242
+  tai_star      loss 5.0382+/-0.0070 std 0.0138 spars 29.8% s2t 589 nt-acc 0.227
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0063 nats  [10% of -0.0635-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1203 bootCI[-0.1322,-0.1088] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -6.35
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1510 bootCI[-0.1627,-0.1396]
+  H1 tai vs bitnet158: dSteps -95 | t-p 0.0000 | d -4.14
+  H4 tai: Levene p 0.9568 (std 0.0185 vs 0.0193)
+  downstream tai: nt-acc 0.227 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai: 0.278 vs 0.269 | dAcc +0.009 bootCI[-0.003,+0.017] | t-p 0.2873
+  lm-eval ARC-Easy(acc_norm) tai: 0.229 vs 0.218 | dAcc +0.011 bootCI[-0.010,+0.033] | t-p 0.4685
+  lm-eval HellaSwag(acc) tai: 0.247 vs 0.244 | dAcc +0.002 bootCI[-0.013,+0.017] | t-p 0.8218
+  lm-eval HellaSwag(acc_norm) tai: 0.289 vs 0.301 | dAcc -0.012 bootCI[-0.023,+0.000] | t-p 0.2123
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0937 bootCI[+0.0836,+0.1045] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d +5.32
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0630 bootCI[+0.0527,+0.0740]
+  H1 tai_warmup vs bitnet158: dSteps +53 | t-p 0.0000 | d +3.17
+  H4 tai_warmup: Levene p 0.5930 (std 0.0157 vs 0.0193)
+  downstream tai_warmup: nt-acc 0.242 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.277 vs 0.269 | dAcc +0.008 bootCI[-0.010,+0.017] | t-p 0.4738
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.242 vs 0.218 | dAcc +0.024 bootCI[+0.013,+0.040] | t-p 0.0927
+  lm-eval HellaSwag(acc) tai_warmup: 0.239 vs 0.244 | dAcc -0.006 bootCI[-0.017,+0.007] | t-p 0.4975
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.283 vs 0.301 | dAcc -0.018 bootCI[-0.030,-0.010] | t-p 0.1028
+  H2-TOST tai_star vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_star vs bitnet158: dLoss -0.1214 bootCI[-0.1309,-0.1114] (sign resolved) | t-p 0.0000 | wilcoxon(support) 0.0001 | d -7.23
+    [exploratory] tai_star vs data-min gamma_offset: dLoss -0.1522 bootCI[-0.1622,-0.1417]
+  H1 tai_star vs bitnet158: dSteps -95 | t-p 0.0000 | d -4.85
+  H4 tai_star: Levene p 0.4611 (std 0.0138 vs 0.0193)
+  downstream tai_star: nt-acc 0.227 vs 0.236 (t-p 0.0000)
+  lm-eval ARC-Easy(acc) tai_star: 0.267 vs 0.269 | dAcc -0.002 bootCI[-0.013,+0.017] | t-p 0.8367
+  lm-eval ARC-Easy(acc_norm) tai_star: 0.233 vs 0.218 | dAcc +0.016 bootCI[-0.003,+0.037] | t-p 0.3119
+  lm-eval HellaSwag(acc) tai_star: 0.246 vs 0.244 | dAcc +0.001 bootCI[-0.007,+0.010] | t-p 0.8399
+  lm-eval HellaSwag(acc_norm) tai_star: 0.296 vs 0.301 | dAcc -0.006 bootCI[-0.023,+0.003] | t-p 0.5958
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim768:tai_star': 'reject', 'dim768:tai': 'reject', 'dim768:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0635 above FP16
+  [EXPLORATORY scale]
+
+===== dim896 =====
+  fp16_control  loss 5.0494+/-0.0054 std 0.0062 spars 0.0% s2t 480 nt-acc 0.231
+  standard      loss 4.9990+/-0.0062 std 0.0070 spars 31.9% s2t 504 nt-acc 0.233
+  lsuv          loss 4.9811+/-0.0189 std 0.0215 spars 31.5% s2t 488 nt-acc 0.235
+  bitnet158     loss 4.9965+/-0.0097 std 0.0110 spars 31.9% s2t 504 nt-acc 0.234
+  sparse_sched  loss 5.0212+/-0.0139 std 0.0158 spars 47.9% s2t 476 nt-acc 0.234
+  gamma_offset  loss 4.9591+/-0.0119 std 0.0136 spars 25.8% s2t 496 nt-acc 0.237
+  tai           loss 5.0981+/-0.0163 std 0.0186 spars 29.7% s2t 576 nt-acc 0.227
+  tai_warmup    loss 4.9219+/-0.0108 std 0.0123 spars 29.8% s2t 464 nt-acc 0.238
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0053 nats  [10% of -0.0529-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1016 bootCI[-0.1122,-0.0910] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d -6.63
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1390 bootCI[-0.1504,-0.1217]
+  H1 tai vs bitnet158: dSteps -72 | t-p 0.0061 | d -3.69
+  H4 tai: Levene p 0.3603 (std 0.0186 vs 0.0110)
+  downstream tai: nt-acc 0.227 vs 0.234 (t-p 0.0009)
+  lm-eval ARC-Easy(acc) tai: 0.260 vs 0.261 | dAcc -0.001 bootCI[-0.020,+0.017] | t-p 0.9261
+  lm-eval ARC-Easy(acc_norm) tai: 0.213 vs 0.233 | dAcc -0.020 bootCI[-0.027,-0.013] | t-p 0.0351
+  lm-eval HellaSwag(acc) tai: 0.243 vs 0.246 | dAcc -0.002 bootCI[-0.020,+0.020] | t-p 0.8675
+  lm-eval HellaSwag(acc_norm) tai: 0.301 vs 0.282 | dAcc +0.019 bootCI[-0.010,+0.047] | t-p 0.3678
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0746 bootCI[+0.0606,+0.0860] (sign resolved) | t-p 0.0006 | wilcoxon(support) nan | d +6.38
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0372 bootCI[+0.0221,+0.0528]
+  H1 tai_warmup vs bitnet158: dSteps +40 | t-p 0.0032 | d +4.47
+  H4 tai_warmup: Levene p 0.8190 (std 0.0123 vs 0.0110)
+  downstream tai_warmup: nt-acc 0.238 vs 0.234 (t-p 0.0078)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.278 vs 0.261 | dAcc +0.017 bootCI[-0.020,+0.043] | t-p 0.4720
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.220 vs 0.233 | dAcc -0.013 bootCI[-0.020,-0.010] | t-p 0.0572
+  lm-eval HellaSwag(acc) tai_warmup: 0.247 vs 0.246 | dAcc +0.001 bootCI[-0.010,+0.017] | t-p 0.9024
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.286 vs 0.282 | dAcc +0.003 bootCI[-0.003,+0.010] | t-p 0.4778
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim896:tai': 'reject', 'dim896:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0529 above FP16
+  [EXPLORATORY scale]
+
+===== dim1024 =====
+  fp16_control  loss 5.0639+/-0.0071 std 0.0081 spars 0.0% s2t 464 nt-acc 0.229
+  standard      loss 5.0288+/-0.0030 std 0.0034 spars 32.1% s2t 500 nt-acc 0.230
+  lsuv          loss 5.0216+/-0.0196 std 0.0224 spars 31.6% s2t 488 nt-acc 0.231
+  bitnet158     loss 5.0198+/-0.0104 std 0.0118 spars 32.1% s2t 496 nt-acc 0.231
+  sparse_sched  loss 4.9945+/-0.0072 std 0.0082 spars 47.8% s2t 452 nt-acc 0.235
+  gamma_offset  loss 4.9555+/-0.0156 std 0.0178 spars 25.9% s2t 484 nt-acc 0.236
+  tai           loss 5.1355+/-0.0057 std 0.0065 spars 29.9% s2t 596 nt-acc 0.224
+  tai_warmup    loss 4.9599+/-0.0187 std 0.0213 spars 30.2% s2t 464 nt-acc 0.235
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0044 nats  [10% of -0.0441-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.1157 bootCI[-0.1222,-0.1092] (sign resolved) | t-p 0.0000 | wilcoxon(support) nan | d -12.12
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1800 bootCI[-0.1931,-0.1670]
+  H1 tai vs bitnet158: dSteps -100 | t-p 0.0050 | d -4.15
+  H4 tai: Levene p 0.3339 (std 0.0065 vs 0.0118)
+  downstream tai: nt-acc 0.224 vs 0.231 (t-p 0.0008)
+  lm-eval ARC-Easy(acc) tai: 0.263 vs 0.258 | dAcc +0.006 bootCI[-0.007,+0.027] | t-p 0.6525
+  lm-eval ARC-Easy(acc_norm) tai: 0.223 vs 0.229 | dAcc -0.006 bootCI[-0.027,+0.023] | t-p 0.7458
+  lm-eval HellaSwag(acc) tai: 0.244 vs 0.248 | dAcc -0.003 bootCI[-0.020,+0.013] | t-p 0.7621
+  lm-eval HellaSwag(acc_norm) tai: 0.292 vs 0.279 | dAcc +0.013 bootCI[+0.000,+0.023] | t-p 0.1946
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0599 bootCI[+0.0386,+0.0850] (sign resolved) | t-p 0.0102 | wilcoxon(support) nan | d +3.48
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss -0.0044 bootCI[-0.0299,+0.0272]
+  H1 tai_warmup vs bitnet158: dSteps +32 | t-p 0.0028 | d +2.39
+  H4 tai_warmup: Levene p 0.6213 (std 0.0213 vs 0.0118)
+  downstream tai_warmup: nt-acc 0.235 vs 0.231 (t-p 0.0560)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.280 vs 0.258 | dAcc +0.022 bootCI[-0.010,+0.060] | t-p 0.3897
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.219 vs 0.229 | dAcc -0.010 bootCI[-0.023,+0.010] | t-p 0.4296
+  lm-eval HellaSwag(acc) tai_warmup: 0.240 vs 0.248 | dAcc -0.008 bootCI[-0.020,+0.007] | t-p 0.4226
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.288 vs 0.279 | dAcc +0.009 bootCI[-0.020,+0.040] | t-p 0.6595
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1024:tai': 'reject', 'dim1024:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0441 above FP16
+  [EXPLORATORY scale]
+
+===== dim1280 =====
+  fp16_control  loss 5.1815+/-0.0065 std 0.0074 spars 0.0% s2t 648 nt-acc 0.220
+  standard      loss 4.9164+/-0.0069 std 0.0078 spars 31.2% s2t 504 nt-acc 0.241
+  lsuv          loss 4.9293+/-0.0080 std 0.0092 spars 31.2% s2t 508 nt-acc 0.241
+  bitnet158     loss 4.9171+/-0.0057 std 0.0065 spars 31.3% s2t 508 nt-acc 0.241
+  sparse_sched  loss 5.0131+/-0.0081 std 0.0093 spars 47.8% s2t 532 nt-acc 0.232
+  gamma_offset  loss 4.9032+/-0.0134 std 0.0153 spars 25.2% s2t 504 nt-acc 0.242
+  tai           loss 4.9890+/-0.0144 std 0.0165 spars 26.4% s2t 580 nt-acc 0.237
+  tai_warmup    loss 4.8161+/-0.0127 std 0.0145 spars 26.3% s2t 480 nt-acc 0.251
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0264 nats  [10% of -0.2644-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0720 bootCI[-0.0839,-0.0569] (sign resolved) | t-p 0.0008 | wilcoxon(support) nan | d -5.75
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.0858 bootCI[-0.0944,-0.0781]
+  H1 tai vs bitnet158: dSteps -72 | t-p 0.0021 | d -4.47
+  H4 tai: Levene p 0.3888 (std 0.0165 vs 0.0065)
+  downstream tai: nt-acc 0.237 vs 0.241 (t-p 0.0028)
+  lm-eval ARC-Easy(acc) tai: 0.273 vs 0.263 | dAcc +0.010 bootCI[-0.017,+0.027] | t-p 0.5352
+  lm-eval ARC-Easy(acc_norm) tai: 0.239 vs 0.226 | dAcc +0.013 bootCI[-0.010,+0.030] | t-p 0.3828
+  lm-eval HellaSwag(acc) tai: 0.236 vs 0.227 | dAcc +0.009 bootCI[-0.010,+0.030] | t-p 0.5236
+  lm-eval HellaSwag(acc_norm) tai: 0.294 vs 0.293 | dAcc +0.001 bootCI[-0.023,+0.013] | t-p 0.9358
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.1010 bootCI[+0.0865,+0.1162] (sign resolved) | t-p 0.0003 | wilcoxon(support) nan | d +8.99
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0872 bootCI[+0.0799,+0.0933]
+  H1 tai_warmup vs bitnet158: dSteps +28 | t-p 0.0046 | d +3.61
+  H4 tai_warmup: Levene p 0.1634 (std 0.0145 vs 0.0065)
+  downstream tai_warmup: nt-acc 0.251 vs 0.241 (t-p 0.0014)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.258 vs 0.263 | dAcc -0.006 bootCI[-0.027,+0.020] | t-p 0.7235
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.218 vs 0.226 | dAcc -0.008 bootCI[-0.030,+0.010] | t-p 0.5763
+  lm-eval HellaSwag(acc) tai_warmup: 0.244 vs 0.227 | dAcc +0.018 bootCI[+0.013,+0.023] | t-p 0.0263
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.296 vs 0.293 | dAcc +0.002 bootCI[-0.007,+0.010] | t-p 0.6914
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1280:tai_warmup': 'reject', 'dim1280:tai': 'reject'}
+  FP16 gap: bitnet158 is -0.2644 above FP16
+  [EXPLORATORY scale]
+
+===== dim1536 =====
+  fp16_control  loss 4.9945+/-0.0105 std 0.0120 spars 0.0% s2t 504 nt-acc 0.238
+  standard      loss 4.9443+/-0.0075 std 0.0085 spars 31.3% s2t 508 nt-acc 0.237
+  lsuv          loss 4.9484+/-0.0080 std 0.0091 spars 31.2% s2t 500 nt-acc 0.238
+  bitnet158     loss 4.9407+/-0.0104 std 0.0118 spars 31.4% s2t 508 nt-acc 0.238
+  sparse_sched  loss 5.0858+/-0.0116 std 0.0133 spars 48.0% s2t 532 nt-acc 0.226
+  gamma_offset  loss 4.8928+/-0.0086 std 0.0098 spars 25.3% s2t 500 nt-acc 0.243
+  tai           loss 4.9973+/-0.0062 std 0.0071 spars 26.8% s2t 576 nt-acc 0.236
+  tai_warmup    loss 4.8453+/-0.0099 std 0.0113 spars 27.0% s2t 472 nt-acc 0.246
+  primary baseline: bitnet158 [PRE-REGISTERED(bitnet158)] | secondary-min baseline: gamma_offset
+  H2 TOST margin = 0.0054 nats  [10% of -0.0538-nat ternary-vs-fp16 gap]
+  H2-TOST tai vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai vs bitnet158: dLoss -0.0566 bootCI[-0.0623,-0.0508] (sign resolved) | t-p 0.0001 | wilcoxon(support) nan | d -5.81
+    [exploratory] tai vs data-min gamma_offset: dLoss -0.1045 bootCI[-0.1124,-0.0982]
+  H1 tai vs bitnet158: dSteps -68 | t-p 0.0048 | d -3.40
+  H4 tai: Levene p 0.3854 (std 0.0071 vs 0.0118)
+  downstream tai: nt-acc 0.236 vs 0.238 (t-p 0.0019)
+  lm-eval ARC-Easy(acc) tai: 0.267 vs 0.276 | dAcc -0.009 bootCI[-0.013,-0.007] | t-p 0.0572
+  lm-eval ARC-Easy(acc_norm) tai: 0.238 vs 0.226 | dAcc +0.012 bootCI[-0.003,+0.027] | t-p 0.2943
+  lm-eval HellaSwag(acc) tai: 0.234 vs 0.250 | dAcc -0.016 bootCI[-0.030,-0.007] | t-p 0.1663
+  lm-eval HellaSwag(acc_norm) tai: 0.286 vs 0.291 | dAcc -0.006 bootCI[-0.020,+0.007] | t-p 0.5492
+  H2-TOST tai_warmup vs bitnet158: SKIPPED (only 0 plateau-paired seeds; converged-quality claim not testable -> reported as unresolved)
+  H2 tai_warmup vs bitnet158: dLoss +0.0954 bootCI[+0.0793,+0.1095] (sign resolved) | t-p 0.0004 | wilcoxon(support) nan | d +8.27
+    [exploratory] tai_warmup vs data-min gamma_offset: dLoss +0.0475 bootCI[+0.0379,+0.0601]
+  H1 tai_warmup vs bitnet158: dSteps +36 | t-p 0.0008 | d +3.29
+  H4 tai_warmup: Levene p 0.9550 (std 0.0113 vs 0.0118)
+  downstream tai_warmup: nt-acc 0.246 vs 0.238 (t-p 0.0008)
+  lm-eval ARC-Easy(acc) tai_warmup: 0.273 vs 0.276 | dAcc -0.002 bootCI[-0.037,+0.023] | t-p 0.9125
+  lm-eval ARC-Easy(acc_norm) tai_warmup: 0.228 vs 0.226 | dAcc +0.002 bootCI[-0.017,+0.020] | t-p 0.8534
+  lm-eval HellaSwag(acc) tai_warmup: 0.237 vs 0.250 | dAcc -0.013 bootCI[-0.033,+0.000] | t-p 0.3206
+  lm-eval HellaSwag(acc_norm) tai_warmup: 0.290 vs 0.291 | dAcc -0.001 bootCI[-0.017,+0.017] | t-p 0.9192
+  Holm-Bonferroni (CONFIRMATORY val-loss family): {'dim1536:tai': 'reject', 'dim1536:tai_warmup': 'reject'}
+  FP16 gap: bitnet158 is -0.0538 above FP16
+
+H6 (PRIMARY) sign-consistency: 11/11 scales show TAI effect>0 (binomial p=0.0010). Per scale:
+    dim192  [expl]    1.4M -> mean effect +0.1428 (TAI better)
+    dim256  [conf]    2.5M -> mean effect +0.1329 (TAI better)
+    dim320  [expl]    4.8M -> mean effect +0.1257 (TAI better)
+    dim384  [conf]    8.3M -> mean effect +0.1677 (TAI better)
+    dim512  [conf]   19.6M -> mean effect +0.2014 (TAI better)
+    dim640  [expl]   34.4M -> mean effect +0.1911 (TAI better)
+    dim768  [conf]   55.1M -> mean effect +0.0937 (TAI better)
+    dim896  [expl]   82.4M -> mean effect +0.0746 (TAI better)
+    dim1024 [expl]  117.4M -> mean effect +0.0599 (TAI better)
+    dim1280 [expl]  214.1M -> mean effect +0.1010 (TAI better)
+    dim1536 [expl]  352.3M -> mean effect +0.0954 (TAI better)
+
+H6 (SECONDARY) mixed-effects slope over 11 scales, 95 paired points:
+    statsmodels unavailable -> descriptive fallback: Singular matrix
+        1.4M params -> mean TAI effect +0.1428
+        2.5M params -> mean TAI effect +0.1329
+        4.8M params -> mean TAI effect +0.1257
+        8.3M params -> mean TAI effect +0.1677
+       19.6M params -> mean TAI effect +0.2014
+       34.4M params -> mean TAI effect +0.1911
+       55.1M params -> mean TAI effect +0.0937
+       82.4M params -> mean TAI effect +0.0746
+      117.4M params -> mean TAI effect +0.0599
+      214.1M params -> mean TAI effect +0.1010
+      352.3M params -> mean TAI effect +0.0954
+    OLS slope vs log-params (descriptive): -0.0127
+
+NOTE: n=15 per cell. We report effect sizes with bootstrap CIs and flag
+when a CI crosses zero (sign unresolved). Claims are restricted to the
+tested regime (<=50M+ non-embed params, 20M tokens, GPT-2 BPE); broader
+scale is explicitly out of scope and listed under Limitations.
+======================================================================
+(#1) SCALING-LAW ANALYSIS OF THE TAI EFFECT  (positive => TAI better)
+======================================================================
+
+[val_loss gap (nats)]
+   mean effect over scales = +0.0816
+   slope d(effect)/d(log P) = -0.0095  95% CI [-0.0158,-0.0035] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ +0.0321
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ +0.0103
+
+[steps-to-target gap]
+   mean effect over scales = +49.2632
+   slope d(effect)/d(log P) = -10.1556  95% CI [-15.4012,-5.3757] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ -3.8496
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ -27.2337
+
+[sparsity-control gap]
+   mean effect over scales = -0.1854
+   slope d(effect)/d(log P) = -0.0059  95% CI [-0.0071,-0.0045] -> SHRINKS with scale (CI<0)
+   PREDICTION (NOT evidence) at +1 decade(s) params: effect ~ -0.2161
+   PREDICTION (NOT evidence) at +2 decade(s) params: effect ~ -0.2296
+
+Interpretation guide for the paper:
+ * A scale-STABLE or GROWING val_loss gap is the external-validity result:
+   the advantage does not wash out across the measured 1.4M->~50M range,
+   and the fitted trend does not predict it vanishing within an order of
+   magnitude. This is OBSERVATIONAL support over the tested regime PLUS a
+   clearly-labelled extrapolation -- never a claim of billion-scale proof.
+ * Report the slope CI, not just the point, and carry the PREDICTION label
+   into every figure caption that shows the extrapolation band.
+
+(#2) DEPTH-CONTROLLED scaling slope (width-only ladder, fixed depth):
+   slope d(val_loss gap)/d(log P) = -0.0553 95% CI [-0.0701,-0.0392] -> SHRINKS (CI<0)
+   => if this matches the main-ladder sign, the H6 trend is not a depth artefact.
+Plateau-verified fraction of runs over (tol x frac), slope gate on val trace:
+tol\frac    0.30    0.40    0.50
+  0.005    0.00    0.00    0.00
+  0.010    0.00    0.00    0.00
+  0.020    0.03    0.00    0.00
+
+H2 TOST equivalence p (TAI vs bitnet158) at top scale dim2048, margin=0.05 nats, per (tol,frac):
+tol\frac    0.30    0.40    0.50
+  0.005     nan     nan     nan
+  0.010     nan     nan     nan
+  0.020     nan     nan     nan
+
+(If verdicts are stable across the grid, H2 is robust to the plateau definition; cells where either arm has <2 plateau runs show NaN.)
+sigma | empirical initial active ratio (absmean ternary)
+   0.02 | 0.6897
+   0.10 | 0.6896
+   0.50 | 0.6903
+   1.00 | 0.6901
+   2.00 | 0.6904
+Analytical prediction (any sigma): 0.6899
+  init standard: initial active 0.689 (locked)
+  init xavier  : initial active 0.689 (locked)
+  init kaiming : initial active 0.689 (locked)
+  init lsuv    : initial active 0.690 (locked)
+=> No standard init controls initial sparsity; TAI does (Cell 8). Claim verified.
+>>> PHASE START: gamma-warmup ablation
+start tau  -> mean val_loss
+  0.3  120 -> 5.0536
+  0.3  240 -> 5.1249
+  0.3  480 -> 5.1564
+  0.4  120 -> 5.0437
+  0.4  240 -> 5.0514
+  0.4  480 -> 5.1130
+  0.5  120 -> 5.1553
+  0.5  240 -> 5.1568
+  0.5  480 -> 5.1838
+>>> PHASE DONE: gamma-warmup ablation
+==========================================================================
+(R2-A) TAI REALISATION MAP — does the init achieve the requested rho0?
+       entry = realised rho0 at target 0.75   ('BREAK' = separation bound violated)
+==========================================================================
+dm \ jit     0.00     0.15     0.30
+ 0.05     0.7501   0.7501   0.7501
+ 0.15     0.7501   0.7501   0.7501
+ 0.25     0.7501   0.7501   0.7501
+ 0.35     0.7501   0.7501    BREAK
+ 0.45      BREAK    BREAK    BREAK
+
+Valid region: 11/15 cells | max |realised-target| inside valid region = 0.0001
+=> Inside the valid region rho0 is realised exactly and is INDEPENDENT of (dm,jitter);
+   outside it the two-point split no longer separates and rho0 is not realised.
+   This is the pre-registered justification for the default dm=0.15, jitter=0.15.
+>>> PHASE START: TAI dm/jitter quality ablation
+
+==========================================================================
+(R2-B) FINAL val_loss vs dm (rho0=0.75 fixed, dim384, 5 seeds)
+==========================================================================
+  dm=0.05: 5.2304 +/- 0.0466
+  dm=0.15: 5.1908 +/- 0.0366
+  dm=0.25: 5.1701 +/- 0.0250
+  dm=0.35: 5.1048 +/- 0.0202
+
+  one-way ANOVA over dm: F=12.112 p=0.0002  (EXPLORATORY, not in the Holm family)
+  spread of dm-means = 0.1256 nats
+  VERDICT: dm DOES affect quality -> TAI has a SECOND knob; this must be reported, not hidden.
+>>> PHASE DONE: TAI dm/jitter ablation
+>>> PHASE START: LR sensitivity
+lr     method        -> mean val_loss
+  5e-04 standard      -> 5.7185
+  5e-04 tai_warmup    -> 5.8034
+  1e-03 standard      -> 5.4115
+  1e-03 tai_warmup    -> 5.3928
+  2e-03 standard      -> 5.1893
+  2e-03 tai_warmup    -> 5.0409
+  3e-03 standard      -> 5.1196
+  3e-03 tai_warmup    -> 4.9019
+  5e-03 standard      -> 5.1891
+  5e-03 tai_warmup    -> 4.9390
+>>> PHASE DONE: LR sensitivity
+==========================================================================
+(A) DEPLOYMENT MODEL — theoretical 1.58-bit, largest scale [PRIMARY]
+==========================================================================
+  quantized_params_M           782.91
+  fp16_size_MB                 1493.28
+  ternary_info_size_MB         147.92
+  ternary_2bit_size_MB         186.66
+  bits_per_weight_info         1.585
+  bits_per_weight_packed       2.0
+  compression_vs_fp16_info     10.09
+  compression_vs_fp16_2bit     8.0
+
+  This is a counting argument over the ternary codebook; it is independent
+  of this GPU and of our STE implementation. It is a PREDICTION about a real
+  1.58-bit kernel, not a measurement of one.
+
+==========================================================================
+(B) SIMULATION COST — measured on this A100 [SECONDARY, not a deployment claim]
+==========================================================================
+  fp16_control             -> {'latency_ms': 430.38, 'tokens_per_sec': 38069.0, 'peak_mem_GB': 4.972, 'sparsity_pct': 0.0}
+  ternary_simulated_tai    -> {'latency_ms': 718.96, 'tokens_per_sec': 22789.0, 'peak_mem_GB': 4.972, 'sparsity_pct': 25.0}
+
+  ternary-simulated / fp16 latency ratio = 1.67x
+  EXPECTED to exceed 1.0: the simulated path runs the SAME bf16 GEMM plus
+  RMSNorm + activation-quant + weight-quant + rescale. This measures the
+  RESEARCH HARNESS overhead (and is charged to TAI in the compute-equal H1),
+  NOT the speed of ternary inference. Drawing a deployment conclusion from
+  this row -- in either direction -- would be unsupported.
+>>> PHASE DONE: deployment model + simulation cost
+========================================================================
+(R5) DATA-SAMPLING VARIANCE FOR H4 — seed x fold decomposition
+========================================================================
+
+  tai:  n_seeds=15  K=5  mean=5.2113
+    SD across SEEDS (data averaged out) : 0.0272
+    SD across FOLDS (seeds averaged out): 0.0328
+    SD pooled (seed x fold)             : 0.0397
+
+  bitnet158:  n_seeds=15  K=5  mean=5.1324
+    SD across SEEDS (data averaged out) : 0.0309
+    SD across FOLDS (seeds averaged out): 0.0339
+    SD pooled (seed x fold)             : 0.0429
+
+  H4 (Levene, TAI vs bitnet158):
+    pooled seed x fold : W=0.554  p=0.4580   <- includes data-sampling variance (PRE-REGISTERED H4)
+    seed-only          : W=0.343  p=0.5630   <- comparable to the original fold-0 statement
+
+  VERDICT: no evidence that TAI inflates variance (p=0.458 > alpha=0.0125).
+
+  Variance budget: mean SD across folds=0.0334 vs across seeds=0.0290  -> DATA sampling dominates.
+>>> PHASE START: fp16+TAI-init ablation
+======================================================================
+(#3) 2x2 INIT x PRECISION ABLATION at dim384 (n=5 seeds)
+======================================================================
+  FP16:  std-init - TAI-init: dLoss(init effect)=-0.0860  paired t-p=0.0086
+  TERN:  std-init - TAI-init: dLoss(init effect)=-0.0898  paired t-p=0.0090
+
+Reading: if the FP16 init effect ~0 (CI/​p) but the TERNARY init effect is
+positive, TAI's benefit is attributable to ternary OPERATING-POINT control,
+not to a generically better initializer. Report BOTH numbers in the paper.
+>>> PHASE DONE: fp16+TAI-init ablation
+Saved fig4_lmeval.png
+Saved fig5_pareto.png
+Saved fig6_scale.png
+Saved fig7_h3_falsification.png
+Saved fig8_init_ablation.png
+Saved fig9_two_slope.png
+Saved fig10_mechanism.png
+Saved results_controls.tex
+>>> PHASE DONE: figures+tables
+Saved to Drive: ['fig1_convergence.png', 'fig2_final_loss.png', 'fig3_rho0_sweep.png', 'fig4_lmeval.png', 'fig5_pareto.png', 'fig6_scale.png', 'fig7_h3_falsification.png', 'fig8_init_ablation.png', 'fig9_two_slope.png', 'fig10_mechanism.png'] + results_main.tex + results_controls.tex
+
+  !! PLATEAU: 0/760 runs reached plateau (median tail gap -0.225 nats). The 20M-token budget does NOT reach convergence.
+     -> H2 must be read as TOKEN-EQUAL at a fixed budget, not as converged quality. Recorded in the manifest.
+>>> EXCEPTION (cell) — halted

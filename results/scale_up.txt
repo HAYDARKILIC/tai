@@ -1,0 +1,1 @@
+Cluster scale-up: this artifact already spans a 9-scale ladder to >=50M non-embed and a 20M-token plateau-verified budget. Next step is >=2 scales above 100M with the same token-equal protocol and the bitnet158 independent recipe, to test whether the H6 mixed-effects slope CI excludes zero at larger scale.
